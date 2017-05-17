@@ -5,8 +5,10 @@ use work.minipic.all;
 
 entity cpu is
   port(
-    clock               : in    std_logic              := '0';
-    reset               : in    std_logic              := '0'
+    reset               : in    std_logic              := '0';
+    err                 : out   std_logic              := '0';
+    portA_out           : out   address                := (others => '0');
+    portB_out           : out   address                := (others => '0')
     );
 end entity;
 
@@ -85,10 +87,11 @@ architecture a_cpu of cpu is
       clock             : in    std_logic              :='0';
       write_enable      : in    std_logic              :='0';
       status            : out   unsigned (2 downto 0)  := (others => '0');
+      bit_sel           : in    unsigned (2 downto 0)  := (others => '0');
       selection         : in    alu_opcode             := op_nop;
       input             : in    address                := (others => '0');
       w_in              : in    address                := (others => '0');
-      output            : out   address                := (others => 'Z')
+      output            : out   address                := (others => '0')
       );
   end component;
   component statusS is
@@ -107,42 +110,49 @@ architecture a_cpu of cpu is
       err_in            : in    std_logic              := '0';
       cu2pc_wr          : out   std_logic              := '0';
       cu2rom_wr         : out   std_logic              := '0';
-      cu2w_wr           : out   std_logic              := '0';
-      cu2ram_wr         : out   std_logic              := '0';
       cu2ir_wr          : out   std_logic              := '0';
-      cu2fsr_wr         : out   std_logic              := '0';
-      cu2status_wr      : out   std_logic              := '0';
       cu2alu_wr         : out   std_logic              := '0';
+      cu2w_wr           : out   std_logic              := '0';
+      cu2status_wr      : out   std_logic              := '0';
+      cu2fsr_wr         : out   std_logic              := '0';
+      cu2ram_wr         : out   std_logic              := '0';
+      cu2portA_wr       : out   std_logic              := '0';
+      cu2portB_wr       : out   std_logic              := '0';
+      cu2stack_pop      : out   std_logic              := '0';
+      cu2stack_push     : out   std_logic              := '0';
       cu2ram_re         : out   std_logic              := '0';
       cu2pc_sel         : out   std_logic              := '0';
       cu2mux_ram_sel    : out   std_logic              := '0';
       cu2mux_alu_sel    : out   std_logic              := '0';
-      cu2stack_pop      : out   std_logic              := '0';
-      cu2stack_push     : out   std_logic              := '0';
+      cu2alu_bit_sel3   : out   unsigned (2 downto 0)  := (others => '0');
       cu2alu_sel        : out   alu_opcode             := op_nop;
-      ir                : in    word                   := (others => '0')
+      word_in           : in    word                   := (others => '0')
       );
   end component;
 
   --bus signals
   signal bus_aluA       : address                      := (others => '0');
   signal bus_err        : std_logic                    := '0';
+  signal clock          : std_logic                    := '0';
 
   --cu signals
   signal cu2pc_wr       : std_logic                    := '0';
   signal cu2rom_wr      : std_logic                    := '0';
-  signal cu2w_wr        : std_logic                    := '0';
-  signal cu2ram_wr      : std_logic                    := '0';
   signal cu2ir_wr       : std_logic                    := '0';
-  signal cu2fsr_wr      : std_logic                    := '0';
-  signal cu2status_wr   : std_logic                    := '0';
   signal cu2alu_wr      : std_logic                    := '0';
+  signal cu2w_wr        : std_logic                    := '0';
+  signal cu2status_wr   : std_logic                    := '0';
+  signal cu2fsr_wr      : std_logic                    := '0';
+  signal cu2ram_wr      : std_logic                    := '0';
+  signal cu2portA_wr    : std_logic                    := '0';
+  signal cu2portB_wr    : std_logic                    := '0';
+  signal cu2stack_pop   : std_logic                    := '0';
+  signal cu2stack_push  : std_logic                    := '0';
   signal cu2ram_re      : std_logic                    := '0';
   signal cu2pc_sel      : std_logic                    := '0';
   signal cu2mux_ram_sel : std_logic                    := '0';
   signal cu2mux_alu_sel : std_logic                    := '0';
-  signal cu2stack_pop   : std_logic                    := '0';
-  signal cu2stack_push  : std_logic                    := '0';
+  signal cu2alu_bit_sel3: unsigned (2 downto 0)        := (others => '0');
   signal cu2alu_selAL   : alu_opcode                   := op_nop;
 
   --pc signals
@@ -207,9 +217,14 @@ begin
 --Multiplexer to ALU
   mux_alu :  muxAPx1bit    port map (cu2mux_alu_sel, ir2outW(memory_size downto 0), mix2mux_aluAP, mux_alu2aluAP);
 --Aritimetic Logical Unity
-  alu     :  aluA          port map (clock, cu2alu_wr, alu2status3, cu2alu_selAL, mux_alu2aluAP(memory_size - 1 downto 0), w2aluA, bus_aluA);
+  alu     :  aluA          port map (clock, cu2alu_wr, alu2status3, cu2alu_bit_sel3, cu2alu_selAL,
+                                     mux_alu2aluAP(memory_size - 1 downto 0), w2aluA, bus_aluA);
 --Status register
   status  :  statusS       port map (clock, reset, cu2status_wr, mix2statusA, status2outA);
+--Accumulator register
+  portA   :  regA          port map (clock, reset, cu2portA_wr, bus_aluA, portA_out);
+--Accumulator register
+  portB   :  regA          port map (clock, reset, cu2portB_wr, bus_aluA, portB_out);
 
 --Control Unity
   cu      :  cuW           port map (clock,
@@ -217,19 +232,29 @@ begin
                                      bus_err,
                                      cu2pc_wr,
                                      cu2rom_wr,
-                                     cu2w_wr,
-                                     cu2ram_wr,
                                      cu2ir_wr,
-                                     cu2fsr_wr,
-                                     cu2status_wr,
                                      cu2alu_wr,
+                                     cu2w_wr,
+                                     cu2status_wr,
+                                     cu2fsr_wr,
+                                     cu2ram_wr,
+                                     cu2portA_wr,
+                                     cu2portB_wr,
+                                     cu2stack_pop,
+                                     cu2stack_push,
                                      cu2ram_re,
                                      cu2pc_sel,
                                      cu2mux_ram_sel,
                                      cu2mux_alu_sel,
-                                     cu2stack_pop,
-                                     cu2stack_push,
+                                     cu2alu_bit_sel3,
                                      cu2alu_selAL,
                                      ir2outW
                                      );
+
+  --Clock process
+  process
+  begin
+    wait for clock_time;
+    clock <= not(clock);
+  end process;
 end architecture;

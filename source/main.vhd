@@ -23,21 +23,19 @@ end entity;
 architecture a_main of main is
   component cpu
     port (
-      clock : in std_logic                     := '0';
-      reset : in std_logic                     := '0'
+      reset               : in    std_logic              := '0';
+      err                 : out   std_logic              := '0';
+      portA_out           : out   address                := (others => '0');
+      portB_out           : out   address                := (others => '0')
       );
   end component;
-  signal clock : std_logic                     := '0';
-  signal reset : std_logic                     := '0';
+  
+  signal reset, err       :       std_logic              := '0';
+  signal portA_out        :       address                := (others => '0');
+  signal portB_out        :       address                := (others => '0');
   
  begin
-    uut : cpu port map (clock => clock, reset => reset);
-
-    process
-    begin
-      wait for 1 ns;
-      clock <= not(clock);
-    end process;
+    uut : cpu port map (reset, err, portA_out, portB_out);
 
   process
   begin

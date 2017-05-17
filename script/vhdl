@@ -1,0 +1,140 @@
+ERROR='tput setaf 1'
+FILE='tput setaf 10'
+RESPONSE='tput setaf 12'
+INFORMATION='tput setaf 8'
+TITLE='tput setaf 11'
+NC='tput sgr0' # No Color
+
+function verifyFilesDir {
+	echo -e "\n$(${INFORMATION})Verifying files and directories..."
+	if [ ! -d "work" ]; then
+		mkdir work
+	fi
+	if [ ! -d "out" ]; then
+		mkdir out
+	fi
+	if [ ! -d "waves" ]; then
+		mkdir waves
+	fi
+
+	rm -d --force --recursive --verbose work/*
+	rm -d --force --recursive --verbose out/*
+	files='find . -maxdepth 1 -type f -not -name "*.vhd"'
+	if [ ${#files[@]} -gt 0 ]; then
+		echo -e "incorrect"
+		find . -maxdepth 1 -type f -not -name '*.vhd' -print0 | xargs -0 rm --
+	fi
+	#rm -d --force --recursive --verbose waves/*
+	#find . -type f ! -name "*.*" -delete
+	echo -e "End of verification\n$(${NC})"
+}
+
+function analyze {
+	errorFlag=true
+	if [ -f package.vhd ]; then
+		echo -e "\nAnalyzing: $(${FILE})$f$(${RESPONSE})"
+		echo -e "$(${ERROR})"
+		response=$(ghdl -a -v --workdir=work --std=93c package.vhd)
+		if [ "$?" != "0" ]; then
+		echo -e "$(${RESPONSE})$response$(${NC})"
+		  	errorFlag=false
+		else
+			echo -e "$(${RESPONSE})Ok$(${NC})"
+		fi
+	fi
+	for f in *.{vhd,vhdl}
+	do
+		if [ -f $f ]; then
+			if [ $f != "package.vhd" ]; then
+				echo -e "\nAnalyzing: $(${FILE})$f$(${RESPONSE})"
+				echo -e "$(${ERROR})"
+				response=$(ghdl -a -v --workdir=work --std=93c $f)
+				if [ "$?" != "0" ]; then
+					echo -e "$(${RESPONSE})$response$(${NC})"
+					errorFlag=false
+				else
+					echo -e "$(${RESPONSE})Ok$(${NC})"
+				fi
+			fi
+		else
+			echo -e "ERROR: \t$(${ERROR})No files avaliable to analyze. $f$(${NC})"
+		fi	
+	done
+	echo -e "\nEnd of analysis"
+}
+
+function run {
+	echo -e "\nElaborating: $(${FILE})$1.o$(${RESPONSE})"
+        ghdl -e -v -o out/$1 --workdir=work --std=93c $1
+	echo -e "$(${NC})"
+	if [ -f out/$1 ]; then
+		echo -e "Running: $(${FILE})$1$(${RESPONSE})"
+		cd out
+		ghdl -r -v --workdir=../work $1 --stop-time=3000ns --wave=../waves/$1.ghw
+		cd ..
+		echo -e "$?"
+		echo -e "$(${NC})"
+	else
+		echo -e "\t$(${ERROR})Elaborating fail!$(${NC})"
+		return 0;
+	fi
+	if [ -f waves/$1.ghw ]; then
+		echo -e "Opening waves: $(${FILE})$1.ghw$(${RESPONSE})"
+		if [ -f waves/$1.gtkw ]; then
+			gnome-terminal -e "gtkwave --slider-zoom waves/$1.ghw --save=waves/$1.gtkw"
+			#gtkwave --slider-zoom waves/$1.ghw --save=waves/$1.gtkw
+		else
+			gnome-terminal -e "gtkwave -z waves/$1.ghw"
+			#gtkwave -z waves/$1.ghw
+		fi
+	else
+		echo -e "$(${NC})ERROR:\t$(${ERROR})Fail to open waves."
+	fi
+	echo -e "$(${NC})"
+}
+
+function elaborate {
+	if [ -z $1 ]; then
+		if [ -f "main.vhd" ]; then
+			run main
+		else
+			echo -e "$(${ERROR})No file to run"
+			echo -e "\t$(${RESPONSE})Use: vhdl <filename> to run"
+			echo -e "\t<filename> without extension$(${NC})"
+		fi
+	else
+		run $1
+	fi
+}
+
+function compiler {
+	echo -e "$(${INFORMATION})Compiler"
+	ghdl --version
+	echo -e "$(${NC})"
+}
+
+function main {
+	echo -e "\n$(${TITLE})---------------------------------"	
+	echo -e "    VHDL Script for GHDL V 0.5"
+	echo -e "---------------------------------\nby Raphael Z. Moletta$(${NC})"
+	shopt -s nullglob
+	
+	size=`ls -1 *.vhd | wc -l`
+	if [ $size != 0 ]; then
+		
+		compiler
+		verifyFilesDir
+		analyze
+		if $errorFlag ; then
+			elaborate $1
+		else
+			echo -e "$(${NC})ERROR:\t$(${ERROR})Analize verified some error$(${NC})"
+		fi
+	else
+		echo -e "\t$(${RESPONSE})There are no VHD files in this directory(${NC})"
+	fi
+	echo -e "$(${NC})"
+	shopt -u nullglob
+}
+
+main $1

@@ -26,7 +26,12 @@ use ieee.numeric_std.all;
 package minipic is
   --------------------- TYPE BLOCK --------------------
   --Codes to correct ALU's operations
-  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero);
+  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero,
+                      op_bc, op_bs, op_btc, op_bts);
+  type instructions is (addwf, andwf, clrf, clrw, comf, decf, decfsz, incf, incfsz, iorwf, movf, movwf, nop, rlf, rrf, subwf, swapf,
+                        xorwf, bcf, bsf, btfsc, btfss, addlw, andlw, i_call, clrwdt, i_goto, iorlw, movlw, retfie, retlw, i_return, i_sleep,
+                        sublw, xorlw, i_error);
+  type microinstructions is array (0 to 6) of unsigned(19 downto 0);
 
   --------------------- CONSTANTS BLOCK --------------------
   --Size of all processors' memory and memory bus. Allowed change in constant value.
@@ -57,126 +62,225 @@ package minipic is
 
   --------------------- FUNCTION BLOCK --------------------
   --Function called by ALU on operation
-  function alu_function (w_in, input : in unsigned(memory_size downto 0); selection : in alu_opcode) return unsigned;
+  function alu_function (w_in, input : in unsigned(memory_size downto 0); selection : in alu_opcode; bit_sel : in unsigned(2 downto 0)) return unsigned;
+  function instruction_type (instruction : in word) return instructions;
+  function cpu_microcode (signal inst : instructions) return microinstructions; 
+
+type aluop_microinstructions is array (addwf to i_error) of alu_opcode;
+  constant alu_op : aluop_microinstructions := (
+    addwf       => op_add,
+    andwf       => op_and,
+    clrf        => op_zero,
+    clrw        => op_zero,
+    comf        => op_com,
+    decf        => op_dec,
+    decfsz      => op_dec,
+    incf        => op_inc,
+    incfsz      => op_inc,
+    iorwf       => op_or,
+    rlf         => op_rl,
+    rrf         => op_rr,
+    subwf       => op_sub,
+    swapf       => op_swap,
+    xorwf       => op_xor,
+    bcf         => op_bc,
+    bsf         => op_bs,
+    btfsc       => op_btc,
+    btfss       => op_bts,
+    addlw       => op_add,
+    andlw       => op_and,
+    clrwdt      => op_zero,
+    iorlw       => op_or,
+    sublw       => op_sub,
+    xorlw       => op_xor,
+    others      => op_nop
+    );
   
-  --------------------- PROCEDURE BLOCK --------------------
-
-  procedure cu_pc_procedure (signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                             signal alu_sel                                                 : out alu_opcode;
-                             signal ir                                                      : in word
-                            );
-
-  procedure cu_rom_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                             signal alu_sel                                                 : out alu_opcode;
-                             signal ir                                                      : in word
-                            );
-
-  procedure cu_ir_procedure (signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                             signal alu_sel                                                 : out alu_opcode;
-                             signal ir                                                      : in word
-                            );
-
-  procedure cu_mem_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                             signal alu_sel                                                 : out alu_opcode;
-                             signal ir                                                      : in word
-                            );
   --------------------- PROGRAM BLOCK --------------------
   --Type for memory ROM
   type rom_memory is array (0 to 256) of word;
   --Contains the program instructions
   constant memory_data : rom_memory := (
-    0   => B"11000000001000",
-    1   => B"11111111111110",
-    2   => B"00000000000100",
-    3   => B"11111111111100",
-    4   => B"00000000000110",
-    5   => B"11111111111010",
-    6   => B"00000000001000",
-    7   => B"11111111111000",
+    0   => B"11111000001000",
+    1   => B"11110000000001",
+    2   => B"11101000000001",
+    3   => B"11100000000001",
+    4   => B"11100100000011",
+    5   => B"11000011111111",
+    6   => B"00000000000000",
+    7   => B"10100000001010",
     8   => B"00000000001010",
     9   => B"11111111110110",
-    10  => B"00000000001100",
+    10  => B"11110000001100",
     others => (others => '0')
-  );
+    );
 end package;
 
 package body minipic is
+  function cpu_microcode (signal inst : instructions)
+    return microinstructions is
+    begin
+      if inst = addwf or inst =  addlw or inst =  andlw or inst =  iorlw or inst =  movlw or inst =  sublw or inst = xorlw then return (
+        0 => B"0_1000_0000_0000_0_000_000",
+        1 => B"0_0100_0000_0000_0_000_000",
+        2 => B"0_0010_0000_0000_0_000_000",
+        3 => B"0_0011_0000_0000_0_000_000",
+        4 => B"0_0000_0000_0000_0_000_000",
+        5 => B"0_0000_0000_0000_0_000_000",
+        6 => B"0_0000_0001_0000_0_000_000");
+      elsif inst = i_error then return (
+        0 => B"1_0000_0000_0000_0_000_000",
+        1 => B"1_0000_0000_0000_0_000_000",
+        2 => B"1_0000_0000_0000_0_000_000",
+        3 => B"1_0000_0000_0000_0_000_000",
+        4 => B"1_0000_0000_0000_0_000_000",
+        5 => B"1_0000_0000_0000_0_000_000",
+        6 => B"1_0000_0000_0000_0_000_000");
+      elsif inst = i_goto then return (
+        0 => B"0_1000_0000_0000_0_000_000",
+        1 => B"0_0100_0000_0000_0_000_000",
+        2 => B"0_0010_0000_0000_0_000_000",
+        3 => B"0_0010_0001_0000_0_100_000",
+        4 => B"0_0000_0000_0000_0_000_000",
+        5 => B"0_0000_0000_0000_0_000_000",
+        6 => B"0_0000_0000_0000_0_000_000");
+      else return (                  --nop
+        0 => B"0_1000_0000_0000_0_000_000",
+        1 => B"0_0100_0000_0000_0_000_000",
+        2 => B"0_0010_0000_0000_0_000_000",
+        3 => B"0_0000_0000_0000_0_000_000",
+        4 => B"0_0000_0000_0000_0_000_000",
+        5 => B"0_0000_0000_0000_0_000_000",
+        6 => B"0_0000_0001_0000_0_000_000");
+    end if;  
+  end function cpu_microcode;
+    
   --Implementation of alu_function. Changes are allowed to modify the ALU's operations.
-  function alu_function (w_in, input : in unsigned(memory_size downto 0); selection : in alu_opcode) return unsigned is
+  function alu_function (w_in, input : in unsigned(memory_size downto 0); selection : in alu_opcode; bit_sel : in unsigned(2 downto 0))
+    return unsigned is
     variable output : unsigned(memory_size downto 0) := (others => '0');
     variable middle : integer := memory_size / 2;
   begin
     case selection is
       --Increment
-      when op_inc => output := input + 1;
+      when op_inc   => output := input + 1;
       --Addition
-      when op_add => output := input + w_in;
+      when op_add   => output := input + w_in;
       --Decrement
-      when op_dec => output := input - 1;
+      when op_dec   => output := input - 1;
       --Subtraction
-      when op_sub => output :=  w_in - input;
+      when op_sub   => output :=  w_in - input;
       --Logical AND
-      when op_and => output := input and w_in;
+      when op_and   => output := input and w_in;
       --Logical OR
-      when op_or => output := input or w_in;
+      when op_or    => output := input or w_in;
       --Logical XOR
-      when op_xor => output :=  input xor w_in;
+      when op_xor   => output :=  input xor w_in;
       --Logical NOT for bus
-      when op_com => output := not input;
+      when op_com   => output := not input;
       --Swap nibbles
-      when op_swap => output := input(middle-1 downto 0) & input(memory_size-1 downto middle);
+      when op_swap  => output := input(middle-1 downto 0) & input(memory_size-1 downto middle);
       --Rotate to left 1 bit
-      when op_rl => output := input sll 1;
+      when op_rl    => output := input sll 1;
       --Rotate to right 1 bit
-      when op_rr => output := input srl 1;
+      when op_rr    => output := input srl 1;
+      --Clear bit on bit_sel's position
+      when op_bc    => output := input; output(to_integer(bit_sel)) := '0';
+      --Set bit on bit_sel's position
+      when op_bs    => output := input; output(to_integer(bit_sel)) := '1';
+      --Test if bit is clear on bit_sel's positon, return 0 if true
+      when op_btc   => if input(to_integer(bit_sel)) = '0' then
+                         output := (others => '0');
+                       else
+                         output := (others => '1');
+                       end if;
+      --Test if bit is set on bit_sel's positon, return 0 if true
+      when op_bts   => if input(to_integer(bit_sel)) = '1' then
+                         output := (others => '0');
+                       else
+                         output := (others => '1');
+                       end if;
       --No operation is executate
-      when op_nop => output := input;
+      when op_nop   => output := input;
       --Set zero
-      when op_zero => output := (others => '0');
+      when op_zero  => output := (others => '0');
     end case;
     return output;
   end function;
 
-  function cu_function (signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : in std_logic;
-                            signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : in std_logic;
-                            signal alu_sel                                                 : in alu_opcode;
-                            signal ir                                                      : in word
-                        ) return std_logic is begin
-      
-  end function cu_function;
-  procedure cu_pc_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                            signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                            signal alu_sel                                                 : out alu_opcode;
-                            signal ir                                                      : in word
-                           ) is begin
-
-  end procedure cu_pc_procedure;
-
-  procedure cu_rom_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push: out std_logic;
-                             signal alu_sel                                                : out alu_opcode;
-                             signal ir                                                     : in word
-                            ) is begin
-    
-  end procedure cu_rom_procedure;
-  
-  procedure cu_ir_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                 : out std_logic;
-                            signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push : out std_logic;
-                            signal alu_sel                                                 : out alu_opcode;
-                            signal ir                                                      : in word
-                           ) is begin
-                                   
-  end procedure cu_ir_procedure;
-  
-  procedure cu_mem_procedure(signal w_wr, ram_wr, fsr_wr, status_wr, ram_re                : out std_logic;
-                             signal pc_sel, mux_alu_sel, mux_ram_sel, stack_pop, stack_push: out std_logic;
-                             signal alu_sel                                                : out alu_opcode;
-                             signal ir                                                     : in word
-                            ) is begin
-
-  end procedure cu_mem_procedure;
+  -- function instruction_type
+  function instruction_type (instruction : in word)
+    return instructions is
+  begin
+    if instruction = B"00_0000_0000_0000" or instruction = B"00_0000_0010_0000" or
+       instruction = B"00_0000_0100_0000" or instruction = B"00_0000_0110_0000" then
+      return nop;
+    elsif instruction = B"00_0000_0110_0100" then
+      return clrwdt;
+    elsif instruction = B"00_0000_0000_1000" then
+      return i_return;
+    elsif instruction = B"00_0000_0110_0011" then
+      return i_sleep;
+    elsif instruction = B"00_0000_0000_1001" then
+      return retfie;
+    elsif instruction(13 downto 7) = B"00_0001_1" then
+      return clrf;
+    elsif instruction(13 downto 7) = B"00_0001_0" then
+      return clrw;
+    elsif instruction(13 downto 7) = B"00_0000_1" then
+      return movwf;
+    elsif instruction(13 downto 8) = B"00_0111" then
+      return addwf;
+    elsif instruction(13 downto 8) = B"00_0101" then
+      return andwf;
+    elsif instruction(13 downto 8) = B"00_1001" then
+      return comf;
+    elsif instruction(13 downto 8) = B"00_0011" then
+      return decf;
+    elsif instruction(13 downto 8) = B"00_1011" then
+      return decfsz;
+    elsif instruction(13 downto 8) = B"00_1010" then
+      return incf;
+    elsif instruction(13 downto 8) = B"00_1111" then
+      return incfsz;
+    elsif instruction(13 downto 8) = B"00_0100" then
+      return iorwf;
+    elsif instruction(13 downto 8) = B"00_1101" then
+      return rlf;
+    elsif instruction(13 downto 8) = B"00_1100" then
+      return rrf;
+    elsif instruction(13 downto 8) = B"00_0010" then
+      return subwf;
+    elsif instruction(13 downto 8) = B"00_1110" then
+      return swapf;
+    elsif instruction(13 downto 8) = B"11_1001" then
+      return andlw;
+    elsif instruction(13 downto 8) = B"11_1000" then
+      return iorlw;
+    elsif instruction(13 downto 8) = B"11_1010" then
+      return xorlw;
+    elsif instruction(13 downto 9) = B"11_111" then
+      return addlw;
+    elsif instruction(13 downto 9) = B"11_110" then
+      return sublw;
+    elsif instruction(13 downto 10) = B"01_00" then
+      return bcf;
+    elsif instruction(13 downto 10) = B"01_01" then
+      return bsf;
+    elsif instruction(13 downto 10) = B"01_10" then
+      return btfsc;
+    elsif instruction(13 downto 10) = B"01_11" then
+      return btfss;
+    elsif instruction(13 downto 10) = B"11_00" then
+      return movlw;
+    elsif instruction(13 downto 10) = B"11_01" then
+      return retlw;
+    elsif instruction(13 downto 11) = B"10_0" then
+      return i_call;
+    elsif instruction(13 downto 11) = B"10_1" then
+      return i_goto;
+    else
+      return i_error;
+    end if;
+  end function instruction_type;
 end package body;

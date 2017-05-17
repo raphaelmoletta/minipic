@@ -1,0 +1,100 @@
+[*]
+[*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
+[*] Wed May 17 00:33:04 2017
+[*]
+[dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
+[dumpfile_mtime] "Wed May 17 00:32:25 2017"
+[dumpfile_size] 50288
+[savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
+[timestart] 0
+[size] 1301 744
+[pos] -1 -1
+*-23.255806 15120000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.main.
+[treeopen] top.main.uut.
+[treeopen] top.main.uut.cu.
+[sst_width] 229
+[signals_width] 190
+[sst_expanded] 1
+[sst_vpaned_height] 211
+@28
+top.main.uut.clock
+top.main.reset
+top.main.err
+@c00022
+#{top.main.uut.cu.microcode[19:0]} top.main.uut.cu.microcode[19] top.main.uut.cu.microcode[18] top.main.uut.cu.microcode[17] top.main.uut.cu.microcode[16] top.main.uut.cu.microcode[15] top.main.uut.cu.microcode[14] top.main.uut.cu.microcode[13] top.main.uut.cu.microcode[12] top.main.uut.cu.microcode[11] top.main.uut.cu.microcode[10] top.main.uut.cu.microcode[9] top.main.uut.cu.microcode[8] top.main.uut.cu.microcode[7] top.main.uut.cu.microcode[6] top.main.uut.cu.microcode[5] top.main.uut.cu.microcode[4] top.main.uut.cu.microcode[3] top.main.uut.cu.microcode[2] top.main.uut.cu.microcode[1] top.main.uut.cu.microcode[0]
+@28
+top.main.uut.cu.microcode[19]
+top.main.uut.cu.microcode[18]
+top.main.uut.cu.microcode[17]
+top.main.uut.cu.microcode[16]
+top.main.uut.cu.microcode[15]
+top.main.uut.cu.microcode[14]
+top.main.uut.cu.microcode[13]
+top.main.uut.cu.microcode[12]
+top.main.uut.cu.microcode[11]
+top.main.uut.cu.microcode[10]
+top.main.uut.cu.microcode[9]
+top.main.uut.cu.microcode[8]
+top.main.uut.cu.microcode[7]
+top.main.uut.cu.microcode[6]
+top.main.uut.cu.microcode[5]
+top.main.uut.cu.microcode[4]
+top.main.uut.cu.microcode[3]
+top.main.uut.cu.microcode[2]
+top.main.uut.cu.microcode[1]
+top.main.uut.cu.microcode[0]
+@1401200
+-group_end
+@28
+top.main.uut.cu.state
+top.main.uut.cu.actual_instruction
+top.main.uut.cu2pc_wr
+top.main.uut.cu2rom_wr
+top.main.uut.cu2ir_wr
+top.main.uut.cu.cu2alu_wr
+top.main.uut.cu2w_wr
+top.main.uut.cu.cu2status_wr
+top.main.uut.cu.cu2fsr_wr
+top.main.uut.cu2ram_wr
+top.main.uut.cu.cu2stack_pop
+top.main.uut.cu.cu2stack_push
+top.main.uut.cu.cu2ram_re
+top.main.uut.cu.cu2pc_sel
+top.main.uut.cu.cu2mux_ram_sel
+top.main.uut.cu.cu2mux_alu_sel
+#{top.main.uut.cu.cu2alu_bit_sel3[2:0]} top.main.uut.cu.cu2alu_bit_sel3[2] top.main.uut.cu.cu2alu_bit_sel3[1] top.main.uut.cu.cu2alu_bit_sel3[0]
+@22
+#{top.main.uut.pc2roma[7:0]} top.main.uut.pc2roma[7] top.main.uut.pc2roma[6] top.main.uut.pc2roma[5] top.main.uut.pc2roma[4] top.main.uut.pc2roma[3] top.main.uut.pc2roma[2] top.main.uut.pc2roma[1] top.main.uut.pc2roma[0]
+@c00022
+#{top.main.uut.rom2irw[13:0]} top.main.uut.rom2irw[13] top.main.uut.rom2irw[12] top.main.uut.rom2irw[11] top.main.uut.rom2irw[10] top.main.uut.rom2irw[9] top.main.uut.rom2irw[8] top.main.uut.rom2irw[7] top.main.uut.rom2irw[6] top.main.uut.rom2irw[5] top.main.uut.rom2irw[4] top.main.uut.rom2irw[3] top.main.uut.rom2irw[2] top.main.uut.rom2irw[1] top.main.uut.rom2irw[0]
+@28
+top.main.uut.rom2irw[13]
+top.main.uut.rom2irw[12]
+top.main.uut.rom2irw[11]
+top.main.uut.rom2irw[10]
+top.main.uut.rom2irw[9]
+top.main.uut.rom2irw[8]
+top.main.uut.rom2irw[7]
+top.main.uut.rom2irw[6]
+top.main.uut.rom2irw[5]
+top.main.uut.rom2irw[4]
+top.main.uut.rom2irw[3]
+top.main.uut.rom2irw[2]
+top.main.uut.rom2irw[1]
+top.main.uut.rom2irw[0]
+@1401200
+-group_end
+@22
+#{top.main.uut.ir2outw[13:0]} top.main.uut.ir2outw[13] top.main.uut.ir2outw[12] top.main.uut.ir2outw[11] top.main.uut.ir2outw[10] top.main.uut.ir2outw[9] top.main.uut.ir2outw[8] top.main.uut.ir2outw[7] top.main.uut.ir2outw[6] top.main.uut.ir2outw[5] top.main.uut.ir2outw[4] top.main.uut.ir2outw[3] top.main.uut.ir2outw[2] top.main.uut.ir2outw[1] top.main.uut.ir2outw[0]
+@28
+top.main.uut.cu.cu2alu_sel
+@22
+#{top.main.uut.bus_alua[7:0]} top.main.uut.bus_alua[7] top.main.uut.bus_alua[6] top.main.uut.bus_alua[5] top.main.uut.bus_alua[4] top.main.uut.bus_alua[3] top.main.uut.bus_alua[2] top.main.uut.bus_alua[1] top.main.uut.bus_alua[0]
+@23
+#{top.main.uut.w2alua[7:0]} top.main.uut.w2alua[7] top.main.uut.w2alua[6] top.main.uut.w2alua[5] top.main.uut.w2alua[4] top.main.uut.w2alua[3] top.main.uut.w2alua[2] top.main.uut.w2alua[1] top.main.uut.w2alua[0]
+@28
+top.main.uut.cu2mux_alu_sel
+[pattern_trace] 1
+[pattern_trace] 0
