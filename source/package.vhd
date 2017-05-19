@@ -23,14 +23,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package minipic is
+package minipic is 
   --------------------- TYPE BLOCK --------------------
   --Codes to correct ALU's operations
-  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero,
+  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero, op_movw,
                       op_bc, op_bs, op_btc, op_bts);
   type instructions is (addwf, andwf, clrf, clrw, comf, decf, decfsz, incf, incfsz, iorwf, movf, movwf, nop, rlf, rrf, subwf, swapf,
                         xorwf, bcf, bsf, btfsc, btfss, addlw, andlw, i_call, clrwdt, i_goto, iorlw, movlw, retfie, retlw, i_return, i_sleep,
-                        sublw, xorlw, i_error);
+                        sublw, xorlw);
+  type pc_selection is (pc_address, pc_one, pc_two, pc_stack);
   type microinstructions is array (0 to 6) of unsigned(19 downto 0);
 
   --------------------- CONSTANTS BLOCK --------------------
@@ -44,6 +45,8 @@ package minipic is
   constant page_bits         : integer                  := 3;
   --Size of each page in RAM memory. Allowed change in constant value.
   constant page_size         : integer                  := 128;
+  --Number of elements of stack
+  constant stack_deep        : integer                  := 8;
   --Clock to each step of processor. Allowed change in constant value.
   constant clock_time        : time                     := 1 ns;
 
@@ -66,7 +69,7 @@ package minipic is
   function instruction_type (instruction : in word) return instructions;
   function cpu_microcode (signal inst : instructions) return microinstructions; 
 
-type aluop_microinstructions is array (addwf to i_error) of alu_opcode;
+type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
   constant alu_op : aluop_microinstructions := (
     addwf       => op_add,
     andwf       => op_and,
@@ -93,6 +96,7 @@ type aluop_microinstructions is array (addwf to i_error) of alu_opcode;
     iorlw       => op_or,
     sublw       => op_sub,
     xorlw       => op_xor,
+    movwf       => op_movw,
     others      => op_nop
     );
   
@@ -101,17 +105,24 @@ type aluop_microinstructions is array (addwf to i_error) of alu_opcode;
   type rom_memory is array (0 to 256) of word;
   --Contains the program instructions
   constant memory_data : rom_memory := (
-    0   => B"11111000001000",
-    1   => B"11110000000001",
-    2   => B"11101000000001",
-    3   => B"11100000000001",
-    4   => B"11100100000011",
-    5   => B"11000011111111",
-    6   => B"00000000000000",
-    7   => B"10100000001010",
-    8   => B"00000000001010",
-    9   => B"11111111110110",
-    10  => B"11110000001100",
+    0   => B"11111000001000",           -- addlw 8
+    1   => B"11110000000001",           -- sublw 1
+    2   => B"11101000000001",           -- xorlw 1
+    3   => B"11100000000001",           -- iorlw 1
+    4   => B"11100100000011",           -- andlw 3
+    5   => B"11000011111111",           -- movlw 255
+    6   => B"00000000000000",           -- nop
+    7   => B"10100000001010",           -- goto 0x0A
+    8   => B"00000000000000",           -- nop
+    9   => B"00000000000000",           -- nop
+    10  => B"10000000001011",           -- call 0x0B
+    11  => B"11000000000001",           -- movlw 1
+    12  => B"01000000000001",           -- bcf 1
+    13  => B"00000100000000",           -- clrw
+    14  => B"11000000000010",           -- movlw 2
+    15  => B"00000010000010",           -- movwf 2
+    16  => B"00000110000010",           -- clrf 1
+    17  => B"00000000001000",           -- return
     others => (others => '0')
     );
 end package;
@@ -120,38 +131,86 @@ package body minipic is
   function cpu_microcode (signal inst : instructions)
     return microinstructions is
     begin
-      if inst = addwf or inst =  addlw or inst =  andlw or inst =  iorlw or inst =  movlw or inst =  sublw or inst = xorlw then return (
-        0 => B"0_1000_0000_0000_0_000_000",
-        1 => B"0_0100_0000_0000_0_000_000",
-        2 => B"0_0010_0000_0000_0_000_000",
-        3 => B"0_0011_0000_0000_0_000_000",
-        4 => B"0_0000_0000_0000_0_000_000",
-        5 => B"0_0000_0000_0000_0_000_000",
-        6 => B"0_0000_0001_0000_0_000_000");
-      elsif inst = i_error then return (
-        0 => B"1_0000_0000_0000_0_000_000",
-        1 => B"1_0000_0000_0000_0_000_000",
-        2 => B"1_0000_0000_0000_0_000_000",
-        3 => B"1_0000_0000_0000_0_000_000",
-        4 => B"1_0000_0000_0000_0_000_000",
-        5 => B"1_0000_0000_0000_0_000_000",
-        6 => B"1_0000_0000_0000_0_000_000");
+      if inst = addlw or inst = andlw or inst = iorlw or inst = movlw or inst = sublw or inst = xorlw then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_1000_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = movwf then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_0001_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = bcf then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0000_0000_0000_1_00_00_000",
+        3 => B"0011_0001_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = clrf then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_0001_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = clrw then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_1000_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = i_return then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0000_0000_0010_0_00_00_000",
+        3 => B"0001_0000_0000_0_00_11_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = addwf or inst = andwf or inst = subwf or inst = xorwf then return(--NOT WORKING
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0000_0001_0000_0_00_00_000",
+        3 => B"0011_0000_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
       elsif inst = i_goto then return (
-        0 => B"0_1000_0000_0000_0_000_000",
-        1 => B"0_0100_0000_0000_0_000_000",
-        2 => B"0_0010_0000_0000_0_000_000",
-        3 => B"0_0010_0001_0000_0_100_000",
-        4 => B"0_0000_0000_0000_0_000_000",
-        5 => B"0_0000_0000_0000_0_000_000",
-        6 => B"0_0000_0000_0000_0_000_000");
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_0000_0000_0_00_10_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
+      elsif inst = i_call then return (
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0010_0000_0000_0_00_00_000",
+        3 => B"0011_0000_0001_0_00_10_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000");
       else return (                  --nop
-        0 => B"0_1000_0000_0000_0_000_000",
-        1 => B"0_0100_0000_0000_0_000_000",
-        2 => B"0_0010_0000_0000_0_000_000",
-        3 => B"0_0000_0000_0000_0_000_000",
-        4 => B"0_0000_0000_0000_0_000_000",
-        5 => B"0_0000_0000_0000_0_000_000",
-        6 => B"0_0000_0001_0000_0_000_000");
+        0 => B"1000_0000_0000_0_00_00_000",
+        1 => B"0100_0000_0000_0_00_00_000",
+        2 => B"0000_0000_0000_0_00_00_000",
+        3 => B"0001_0000_0000_0_00_00_000",
+        4 => B"0000_0000_0000_0_00_00_000",
+        5 => B"0000_0000_0000_0_00_00_000",
+        6 => B"0000_0000_0000_0_00_00_000" );
     end if;  
   end function cpu_microcode;
     
@@ -190,18 +249,20 @@ package body minipic is
       when op_bs    => output := input; output(to_integer(bit_sel)) := '1';
       --Test if bit is clear on bit_sel's positon, return 0 if true
       when op_btc   => if input(to_integer(bit_sel)) = '0' then
-                         output := (others => '0');
-                       else
                          output := (others => '1');
+                       else
+                         output := (others => '0');
                        end if;
       --Test if bit is set on bit_sel's positon, return 0 if true
       when op_bts   => if input(to_integer(bit_sel)) = '1' then
-                         output := (others => '0');
-                       else
                          output := (others => '1');
+                       else
+                         output := (others => '0');
                        end if;
       --No operation is executate
       when op_nop   => output := input;
+      --Move w's content to bus
+      when op_movw  => output := w_in;
       --Set zero
       when op_zero  => output := (others => '0');
     end case;
@@ -280,7 +341,7 @@ package body minipic is
     elsif instruction(13 downto 11) = B"10_1" then
       return i_goto;
     else
-      return i_error;
+      return nop;
     end if;
   end function instruction_type;
 end package body;

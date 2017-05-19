@@ -1,19 +1,20 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Wed May 17 00:33:04 2017
+[*] Fri May 19 10:13:02 2017
 [*]
 [dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
-[dumpfile_mtime] "Wed May 17 00:32:25 2017"
-[dumpfile_size] 50288
+[dumpfile_mtime] "Fri May 19 10:10:34 2017"
+[dumpfile_size] 78597
 [savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
-[timestart] 0
+[timestart] 198000000
 [size] 1301 744
 [pos] -1 -1
-*-23.255806 15120000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-23.255806 214720000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.main.
 [treeopen] top.main.uut.
-[treeopen] top.main.uut.cu.
+[treeopen] top.main.uut.pc.
+[treeopen] top.main.uut.ram.ram.
 [sst_width] 229
 [signals_width] 190
 [sst_expanded] 1
@@ -50,10 +51,10 @@ top.main.uut.cu.microcode[0]
 @28
 top.main.uut.cu.state
 top.main.uut.cu.actual_instruction
-top.main.uut.cu2pc_wr
 top.main.uut.cu2rom_wr
 top.main.uut.cu2ir_wr
 top.main.uut.cu.cu2alu_wr
+top.main.uut.cu2pc_wr
 top.main.uut.cu2w_wr
 top.main.uut.cu.cu2status_wr
 top.main.uut.cu.cu2fsr_wr
@@ -61,7 +62,6 @@ top.main.uut.cu2ram_wr
 top.main.uut.cu.cu2stack_pop
 top.main.uut.cu.cu2stack_push
 top.main.uut.cu.cu2ram_re
-top.main.uut.cu.cu2pc_sel
 top.main.uut.cu.cu2mux_ram_sel
 top.main.uut.cu.cu2mux_alu_sel
 #{top.main.uut.cu.cu2alu_bit_sel3[2:0]} top.main.uut.cu.cu2alu_bit_sel3[2] top.main.uut.cu.cu2alu_bit_sel3[1] top.main.uut.cu.cu2alu_bit_sel3[0]
@@ -92,9 +92,22 @@ top.main.uut.rom2irw[0]
 top.main.uut.cu.cu2alu_sel
 @22
 #{top.main.uut.bus_alua[7:0]} top.main.uut.bus_alua[7] top.main.uut.bus_alua[6] top.main.uut.bus_alua[5] top.main.uut.bus_alua[4] top.main.uut.bus_alua[3] top.main.uut.bus_alua[2] top.main.uut.bus_alua[1] top.main.uut.bus_alua[0]
-@23
 #{top.main.uut.w2alua[7:0]} top.main.uut.w2alua[7] top.main.uut.w2alua[6] top.main.uut.w2alua[5] top.main.uut.w2alua[4] top.main.uut.w2alua[3] top.main.uut.w2alua[2] top.main.uut.w2alua[1] top.main.uut.w2alua[0]
 @28
 top.main.uut.cu2mux_alu_sel
+#{top.main.uut.pc.selection[1:0]} top.main.uut.pc.selection[1] top.main.uut.pc.selection[0]
+@22
+#{top.main.uut.pc.stack_in[7:0]} top.main.uut.pc.stack_in[7] top.main.uut.pc.stack_in[6] top.main.uut.pc.stack_in[5] top.main.uut.pc.stack_in[4] top.main.uut.pc.stack_in[3] top.main.uut.pc.stack_in[2] top.main.uut.pc.stack_in[1] top.main.uut.pc.stack_in[0]
+@23
+#{top.main.uut.pc.stack_out[7:0]} top.main.uut.pc.stack_out[7] top.main.uut.pc.stack_out[6] top.main.uut.pc.stack_out[5] top.main.uut.pc.stack_out[4] top.main.uut.pc.stack_out[3] top.main.uut.pc.stack_out[2] top.main.uut.pc.stack_out[1] top.main.uut.pc.stack_out[0]
+@22
+#{top.main.uut.stack.stack[0][7:0]} top.main.uut.stack.stack[0][7] top.main.uut.stack.stack[0][6] top.main.uut.stack.stack[0][5] top.main.uut.stack.stack[0][4] top.main.uut.stack.stack[0][3] top.main.uut.stack.stack[0][2] top.main.uut.stack.stack[0][1] top.main.uut.stack.stack[0][0]
+@28
+#{top.main.uut.stack.pointer[2:0]} top.main.uut.stack.pointer[2] top.main.uut.stack.pointer[1] top.main.uut.stack.pointer[0]
+@22
+#{top.main.uut.ram.ram[0][7:0]} top.main.uut.ram.ram[0][7] top.main.uut.ram.ram[0][6] top.main.uut.ram.ram[0][5] top.main.uut.ram.ram[0][4] top.main.uut.ram.ram[0][3] top.main.uut.ram.ram[0][2] top.main.uut.ram.ram[0][1] top.main.uut.ram.ram[0][0]
+#{top.main.uut.ram.ram[1][7:0]} top.main.uut.ram.ram[1][7] top.main.uut.ram.ram[1][6] top.main.uut.ram.ram[1][5] top.main.uut.ram.ram[1][4] top.main.uut.ram.ram[1][3] top.main.uut.ram.ram[1][2] top.main.uut.ram.ram[1][1] top.main.uut.ram.ram[1][0]
+#{top.main.uut.ram.ram[2][7:0]} top.main.uut.ram.ram[2][7] top.main.uut.ram.ram[2][6] top.main.uut.ram.ram[2][5] top.main.uut.ram.ram[2][4] top.main.uut.ram.ram[2][3] top.main.uut.ram.ram[2][2] top.main.uut.ram.ram[2][1] top.main.uut.ram.ram[2][0]
+#{top.main.uut.ram.ram[3][7:0]} top.main.uut.ram.ram[3][7] top.main.uut.ram.ram[3][6] top.main.uut.ram.ram[3][5] top.main.uut.ram.ram[3][4] top.main.uut.ram.ram[3][3] top.main.uut.ram.ram[3][2] top.main.uut.ram.ram[3][1] top.main.uut.ram.ram[3][0]
 [pattern_trace] 1
 [pattern_trace] 0

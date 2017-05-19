@@ -74,7 +74,7 @@ begin
           err <= '1';
         else
           empty <= '0';
-          stack(pointer) <= data_in;
+          stack(pointer) <= data_in + 1;
           if pointer < 7 then
             pointer <= pointer + 1;
           else

@@ -15,11 +15,13 @@ end entity;
 
 architecture a_cpu of cpu is
   component pcA is
-    port (
+    port (      
       clock             : in    std_logic              := '0';
       reset             : in    std_logic              := '0';
       write_enable      : in    std_logic              := '0';
-      selection         : in    std_logic              := '0';
+      selection         : in    unsigned(1 downto 0)   := B"00";
+      push              : in    std_logic              := '0';
+      pop               : in    std_logic              := '0';
       data_in           : in    address                := (others => '0');
       data_out          : out   address                := (others => '0');
       stack_in          : in    address                := (others => '0');
@@ -71,13 +73,12 @@ architecture a_cpu of cpu is
       output            : out   addressP1              := (others => '0')
       );
   end component;
-  component stack8xA is
+  component stackDxA is
     port (
       clock             : in    std_logic              := '0';
       reset             : in    std_logic              := '0';
       push              : in    std_logic              := '0';
       pop               : in    std_logic              := '0';
-      err               : out   std_logic              := '0';
       data_in           : in    address                := (others => '0');
       data_out          : out   address                := (others => '0')
       );
@@ -107,11 +108,10 @@ architecture a_cpu of cpu is
     port (
       clock             : in    std_logic              := '0';
       reset             : in    std_logic              := '0';
-      err_in            : in    std_logic              := '0';
-      cu2pc_wr          : out   std_logic              := '0';
       cu2rom_wr         : out   std_logic              := '0';
       cu2ir_wr          : out   std_logic              := '0';
       cu2alu_wr         : out   std_logic              := '0';
+      cu2pc_wr          : out   std_logic              := '0';
       cu2w_wr           : out   std_logic              := '0';
       cu2status_wr      : out   std_logic              := '0';
       cu2fsr_wr         : out   std_logic              := '0';
@@ -121,9 +121,9 @@ architecture a_cpu of cpu is
       cu2stack_pop      : out   std_logic              := '0';
       cu2stack_push     : out   std_logic              := '0';
       cu2ram_re         : out   std_logic              := '0';
-      cu2pc_sel         : out   std_logic              := '0';
       cu2mux_ram_sel    : out   std_logic              := '0';
       cu2mux_alu_sel    : out   std_logic              := '0';
+      cu2pc_sel2        : out   unsigned (1 downto 0)  := (others => '0');
       cu2alu_bit_sel3   : out   unsigned (2 downto 0)  := (others => '0');
       cu2alu_sel        : out   alu_opcode             := op_nop;
       word_in           : in    word                   := (others => '0')
@@ -132,14 +132,13 @@ architecture a_cpu of cpu is
 
   --bus signals
   signal bus_aluA       : address                      := (others => '0');
-  signal bus_err        : std_logic                    := '0';
   signal clock          : std_logic                    := '0';
 
   --cu signals
-  signal cu2pc_wr       : std_logic                    := '0';
   signal cu2rom_wr      : std_logic                    := '0';
   signal cu2ir_wr       : std_logic                    := '0';
   signal cu2alu_wr      : std_logic                    := '0';
+  signal cu2pc_wr       : std_logic                    := '0';
   signal cu2w_wr        : std_logic                    := '0';
   signal cu2status_wr   : std_logic                    := '0';
   signal cu2fsr_wr      : std_logic                    := '0';
@@ -149,9 +148,9 @@ architecture a_cpu of cpu is
   signal cu2stack_pop   : std_logic                    := '0';
   signal cu2stack_push  : std_logic                    := '0';
   signal cu2ram_re      : std_logic                    := '0';
-  signal cu2pc_sel      : std_logic                    := '0';
   signal cu2mux_ram_sel : std_logic                    := '0';
   signal cu2mux_alu_sel : std_logic                    := '0';
+  signal cu2pc_sel2     : unsigned (1 downto 0)        := (others => '0');
   signal cu2alu_bit_sel3: unsigned (2 downto 0)        := (others => '0');
   signal cu2alu_selAL   : alu_opcode                   := op_nop;
 
@@ -182,7 +181,7 @@ architecture a_cpu of cpu is
 
   --stack signals
   signal stack2pcA      : address                      := (others => '0');
-
+    
   --status signal
   signal status2outA    : address                      := (others => '0');
 
@@ -199,7 +198,7 @@ begin
   mix2mux_ram1AP <= status2outA(memory_size - 1) & fsr2mux_ramA;
 
 --Program Counter
-  pc      :  pcA           port map (clock, reset, cu2pc_wr, cu2pc_sel, bus_aluA, pc2romA, stack2pcA, pc2stackA);
+  pc      :  pcA           port map (clock, reset, cu2pc_wr, cu2pc_sel2, cu2stack_push, cu2stack_pop, bus_aluA, pc2romA, stack2pcA, pc2stackA);
 --Read Only Memory
   rom     :  romW          port map (clock, reset, cu2rom_wr, pc2romA, rom2irW);
 --Instruction Register
@@ -211,7 +210,7 @@ begin
 --Accumulator register
   w       :  regA          port map (clock, reset, cu2w_wr, bus_aluA, w2aluA);
 --Stack
-  stack   :  stack8xA      port map (clock, reset, cu2stack_push, cu2stack_pop, bus_err, pc2stackA, stack2pcA);
+  stack   :  stackDxA      port map (clock, reset, cu2stack_push, cu2stack_pop, pc2stackA, stack2pcA);
 --Multiplexer to RAM
   mux_ram :  muxAPx1bit    port map (cu2mux_ram_sel, mix2mux_ram0AP, mix2mux_ram1AP, mux_ram2ramAP);
 --Multiplexer to ALU
@@ -229,11 +228,10 @@ begin
 --Control Unity
   cu      :  cuW           port map (clock,
                                      reset,
-                                     bus_err,
-                                     cu2pc_wr,
                                      cu2rom_wr,
                                      cu2ir_wr,
                                      cu2alu_wr,
+                                     cu2pc_wr,
                                      cu2w_wr,
                                      cu2status_wr,
                                      cu2fsr_wr,
@@ -243,9 +241,9 @@ begin
                                      cu2stack_pop,
                                      cu2stack_push,
                                      cu2ram_re,
-                                     cu2pc_sel,
                                      cu2mux_ram_sel,
                                      cu2mux_alu_sel,
+                                     cu2pc_sel2,
                                      cu2alu_bit_sel3,
                                      cu2alu_selAL,
                                      ir2outW

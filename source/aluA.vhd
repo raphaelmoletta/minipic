@@ -40,7 +40,7 @@ begin
         zero := (others => '0');
         input0 := '0' & w_in;
         input1 := '0' & input;
-        out0 := alu_function(input0, input1, selection,bit_sel);
+        out0 := alu_function(input0, input1, selection, bit_sel);
         status(0) <= out0(memory_size);
         status(1) <= out0(memory_size / 2 +1);
         if out0 = zero then
