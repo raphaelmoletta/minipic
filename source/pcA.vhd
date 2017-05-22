@@ -35,19 +35,18 @@ end entity;
 architecture a_pcA of pcA is
   signal registry     : address                      := (others => '0');
 begin
-  process (clock, reset) is
+  process(clock, reset)
   begin
     if reset = '1' then
       registry <= (others => '0');
     elsif write_enable = '1' then
       if rising_edge(clock) then
-        case selection is
-          when B"00"          => registry <= registry + 1;
-          when B"01"          => registry <= registry + 1 + data_in;
-          when B"10"          => registry <= data_in;
-          when B"11"          => registry <= stack_in;
-          when others => null;
-        end case;
+        if selection = B"00" then registry <= registry + 1;
+        elsif selection = B"01" and data_in = B"00000000" then registry <= registry + 2;
+        elsif selection = B"10" then registry <= data_in;
+        elsif selection = B"11" then registry <= stack_in;
+        else  registry <= registry + 1;
+        end if;
       end if;
     end if;
   end process;

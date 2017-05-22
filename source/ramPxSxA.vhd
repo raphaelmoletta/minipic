@@ -23,11 +23,11 @@ entity ramPxSxA is
     reset             : in    std_logic              := '0';
     write_enable      : in    std_logic              := '0';
     read_enable       : in    std_logic              := '0';
+    status_in         : in    address                := (others => '0');
     position          : in    addressP1              := (others => '0');
     data              : inout address                := (others => 'Z')
     );
 end entity;
-
 
 architecture a_ramPxSxA of ramPxSxA is
   type memory is array (0 to 511) of address;
@@ -35,6 +35,7 @@ architecture a_ramPxSxA of ramPxSxA is
 begin
   process(clock, reset)
   begin
+    
     if reset = '1' then
       ram <= (others => (others => '0'));
       data <= (others => 'Z');
@@ -42,10 +43,17 @@ begin
       if rising_edge(clock) then
         ram(to_integer(position)) <= data;
       end if;
-      data <= (others => 'Z');
     elsif read_enable = '1' then
       if rising_edge(clock) then
-        data <= ram(to_integer(position));
+        if position(6 downto 0) = B"0000011" then
+          data <= status_in;
+        else
+          data <= ram(to_integer(position));
+        end if;
+      end if;
+    else
+      if rising_edge(clock) then
+        data <= (others => 'Z');
       end if;
     end if;
   end process;

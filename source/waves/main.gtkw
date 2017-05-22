@@ -1,19 +1,20 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Fri May 19 10:13:02 2017
+[*] Sun May 21 21:51:47 2017
 [*]
 [dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
-[dumpfile_mtime] "Fri May 19 10:10:34 2017"
-[dumpfile_size] 78597
+[dumpfile_mtime] "Sun May 21 21:47:22 2017"
+[dumpfile_size] 666857
 [savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
-[timestart] 198000000
+[timestart] 84000000
 [size] 1301 744
 [pos] -1 -1
-*-23.255806 214720000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-23.255806 108030000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.main.
 [treeopen] top.main.uut.
-[treeopen] top.main.uut.pc.
+[treeopen] top.main.uut.fsr.
+[treeopen] top.main.uut.ram.
 [treeopen] top.main.uut.ram.ram.
 [sst_width] 229
 [signals_width] 190
@@ -24,11 +25,8 @@ top.main.uut.clock
 top.main.reset
 top.main.err
 @c00022
-#{top.main.uut.cu.microcode[19:0]} top.main.uut.cu.microcode[19] top.main.uut.cu.microcode[18] top.main.uut.cu.microcode[17] top.main.uut.cu.microcode[16] top.main.uut.cu.microcode[15] top.main.uut.cu.microcode[14] top.main.uut.cu.microcode[13] top.main.uut.cu.microcode[12] top.main.uut.cu.microcode[11] top.main.uut.cu.microcode[10] top.main.uut.cu.microcode[9] top.main.uut.cu.microcode[8] top.main.uut.cu.microcode[7] top.main.uut.cu.microcode[6] top.main.uut.cu.microcode[5] top.main.uut.cu.microcode[4] top.main.uut.cu.microcode[3] top.main.uut.cu.microcode[2] top.main.uut.cu.microcode[1] top.main.uut.cu.microcode[0]
+#{top.main.uut.cu.microcode[19:0]} top.main.uut.cu.microcode[16] top.main.uut.cu.microcode[15] top.main.uut.cu.microcode[14] top.main.uut.cu.microcode[13] top.main.uut.cu.microcode[12] top.main.uut.cu.microcode[11] top.main.uut.cu.microcode[10] top.main.uut.cu.microcode[9] top.main.uut.cu.microcode[8] top.main.uut.cu.microcode[7] top.main.uut.cu.microcode[6] top.main.uut.cu.microcode[5] top.main.uut.cu.microcode[4] top.main.uut.cu.microcode[3] top.main.uut.cu.microcode[2] top.main.uut.cu.microcode[1] top.main.uut.cu.microcode[0]
 @28
-top.main.uut.cu.microcode[19]
-top.main.uut.cu.microcode[18]
-top.main.uut.cu.microcode[17]
 top.main.uut.cu.microcode[16]
 top.main.uut.cu.microcode[15]
 top.main.uut.cu.microcode[14]
@@ -60,14 +58,68 @@ top.main.uut.cu.cu2status_wr
 top.main.uut.cu.cu2fsr_wr
 top.main.uut.cu2ram_wr
 top.main.uut.cu.cu2stack_pop
+top.main.uut.cu.cu2porta_wr
 top.main.uut.cu.cu2stack_push
 top.main.uut.cu.cu2ram_re
+[color] 1
 top.main.uut.cu.cu2mux_ram_sel
 top.main.uut.cu.cu2mux_alu_sel
+@23
+#{top.main.uut.bus_alua[7:0]} top.main.uut.bus_alua[7] top.main.uut.bus_alua[6] top.main.uut.bus_alua[5] top.main.uut.bus_alua[4] top.main.uut.bus_alua[3] top.main.uut.bus_alua[2] top.main.uut.bus_alua[1] top.main.uut.bus_alua[0]
+@24
+[color] 3
+#{top.main.porta_out[7:0]} top.main.porta_out[7] top.main.porta_out[6] top.main.porta_out[5] top.main.porta_out[4] top.main.porta_out[3] top.main.porta_out[2] top.main.porta_out[1] top.main.porta_out[0]
+@28
 #{top.main.uut.cu.cu2alu_bit_sel3[2:0]} top.main.uut.cu.cu2alu_bit_sel3[2] top.main.uut.cu.cu2alu_bit_sel3[1] top.main.uut.cu.cu2alu_bit_sel3[0]
-@22
+@24
 #{top.main.uut.pc2roma[7:0]} top.main.uut.pc2roma[7] top.main.uut.pc2roma[6] top.main.uut.pc2roma[5] top.main.uut.pc2roma[4] top.main.uut.pc2roma[3] top.main.uut.pc2roma[2] top.main.uut.pc2roma[1] top.main.uut.pc2roma[0]
+#{top.main.uut.pc.registry[7:0]} top.main.uut.pc.registry[7] top.main.uut.pc.registry[6] top.main.uut.pc.registry[5] top.main.uut.pc.registry[4] top.main.uut.pc.registry[3] top.main.uut.pc.registry[2] top.main.uut.pc.registry[1] top.main.uut.pc.registry[0]
+@22
+#{top.main.porta_out[7:0]} top.main.porta_out[7] top.main.porta_out[6] top.main.porta_out[5] top.main.porta_out[4] top.main.porta_out[3] top.main.porta_out[2] top.main.porta_out[1] top.main.porta_out[0]
+[color] 5
+#{top.main.uut.fsr.registry[7:0]} top.main.uut.fsr.registry[7] top.main.uut.fsr.registry[6] top.main.uut.fsr.registry[5] top.main.uut.fsr.registry[4] top.main.uut.fsr.registry[3] top.main.uut.fsr.registry[2] top.main.uut.fsr.registry[1] top.main.uut.fsr.registry[0]
 @c00022
+#{top.main.uut.cu.word_in[13:0]} top.main.uut.cu.word_in[13] top.main.uut.cu.word_in[12] top.main.uut.cu.word_in[11] top.main.uut.cu.word_in[10] top.main.uut.cu.word_in[9] top.main.uut.cu.word_in[8] top.main.uut.cu.word_in[7] top.main.uut.cu.word_in[6] top.main.uut.cu.word_in[5] top.main.uut.cu.word_in[4] top.main.uut.cu.word_in[3] top.main.uut.cu.word_in[2] top.main.uut.cu.word_in[1] top.main.uut.cu.word_in[0]
+@28
+top.main.uut.cu.word_in[13]
+top.main.uut.cu.word_in[12]
+top.main.uut.cu.word_in[11]
+top.main.uut.cu.word_in[10]
+top.main.uut.cu.word_in[9]
+top.main.uut.cu.word_in[8]
+top.main.uut.cu.word_in[7]
+top.main.uut.cu.word_in[6]
+top.main.uut.cu.word_in[5]
+top.main.uut.cu.word_in[4]
+top.main.uut.cu.word_in[3]
+top.main.uut.cu.word_in[2]
+top.main.uut.cu.word_in[1]
+top.main.uut.cu.word_in[0]
+@1401200
+-group_end
+@c00022
+#{top.main.uut.cu.microcode[16:0]} top.main.uut.cu.microcode[16] top.main.uut.cu.microcode[15] top.main.uut.cu.microcode[14] top.main.uut.cu.microcode[13] top.main.uut.cu.microcode[12] top.main.uut.cu.microcode[11] top.main.uut.cu.microcode[10] top.main.uut.cu.microcode[9] top.main.uut.cu.microcode[8] top.main.uut.cu.microcode[7] top.main.uut.cu.microcode[6] top.main.uut.cu.microcode[5] top.main.uut.cu.microcode[4] top.main.uut.cu.microcode[3] top.main.uut.cu.microcode[2] top.main.uut.cu.microcode[1] top.main.uut.cu.microcode[0]
+@28
+top.main.uut.cu.microcode[16]
+top.main.uut.cu.microcode[15]
+top.main.uut.cu.microcode[14]
+top.main.uut.cu.microcode[13]
+top.main.uut.cu.microcode[12]
+top.main.uut.cu.microcode[11]
+top.main.uut.cu.microcode[10]
+top.main.uut.cu.microcode[9]
+top.main.uut.cu.microcode[8]
+top.main.uut.cu.microcode[7]
+top.main.uut.cu.microcode[6]
+top.main.uut.cu.microcode[5]
+top.main.uut.cu.microcode[4]
+top.main.uut.cu.microcode[3]
+top.main.uut.cu.microcode[2]
+top.main.uut.cu.microcode[1]
+top.main.uut.cu.microcode[0]
+@1401200
+-group_end
+@c00028
 #{top.main.uut.rom2irw[13:0]} top.main.uut.rom2irw[13] top.main.uut.rom2irw[12] top.main.uut.rom2irw[11] top.main.uut.rom2irw[10] top.main.uut.rom2irw[9] top.main.uut.rom2irw[8] top.main.uut.rom2irw[7] top.main.uut.rom2irw[6] top.main.uut.rom2irw[5] top.main.uut.rom2irw[4] top.main.uut.rom2irw[3] top.main.uut.rom2irw[2] top.main.uut.rom2irw[1] top.main.uut.rom2irw[0]
 @28
 top.main.uut.rom2irw[13]
@@ -87,20 +139,18 @@ top.main.uut.rom2irw[0]
 @1401200
 -group_end
 @22
+#{top.main.porta_out[7:0]} top.main.porta_out[7] top.main.porta_out[6] top.main.porta_out[5] top.main.porta_out[4] top.main.porta_out[3] top.main.porta_out[2] top.main.porta_out[1] top.main.porta_out[0]
 #{top.main.uut.ir2outw[13:0]} top.main.uut.ir2outw[13] top.main.uut.ir2outw[12] top.main.uut.ir2outw[11] top.main.uut.ir2outw[10] top.main.uut.ir2outw[9] top.main.uut.ir2outw[8] top.main.uut.ir2outw[7] top.main.uut.ir2outw[6] top.main.uut.ir2outw[5] top.main.uut.ir2outw[4] top.main.uut.ir2outw[3] top.main.uut.ir2outw[2] top.main.uut.ir2outw[1] top.main.uut.ir2outw[0]
 @28
 top.main.uut.cu.cu2alu_sel
 @22
-#{top.main.uut.bus_alua[7:0]} top.main.uut.bus_alua[7] top.main.uut.bus_alua[6] top.main.uut.bus_alua[5] top.main.uut.bus_alua[4] top.main.uut.bus_alua[3] top.main.uut.bus_alua[2] top.main.uut.bus_alua[1] top.main.uut.bus_alua[0]
 #{top.main.uut.w2alua[7:0]} top.main.uut.w2alua[7] top.main.uut.w2alua[6] top.main.uut.w2alua[5] top.main.uut.w2alua[4] top.main.uut.w2alua[3] top.main.uut.w2alua[2] top.main.uut.w2alua[1] top.main.uut.w2alua[0]
 @28
 top.main.uut.cu2mux_alu_sel
 #{top.main.uut.pc.selection[1:0]} top.main.uut.pc.selection[1] top.main.uut.pc.selection[0]
 @22
 #{top.main.uut.pc.stack_in[7:0]} top.main.uut.pc.stack_in[7] top.main.uut.pc.stack_in[6] top.main.uut.pc.stack_in[5] top.main.uut.pc.stack_in[4] top.main.uut.pc.stack_in[3] top.main.uut.pc.stack_in[2] top.main.uut.pc.stack_in[1] top.main.uut.pc.stack_in[0]
-@23
 #{top.main.uut.pc.stack_out[7:0]} top.main.uut.pc.stack_out[7] top.main.uut.pc.stack_out[6] top.main.uut.pc.stack_out[5] top.main.uut.pc.stack_out[4] top.main.uut.pc.stack_out[3] top.main.uut.pc.stack_out[2] top.main.uut.pc.stack_out[1] top.main.uut.pc.stack_out[0]
-@22
 #{top.main.uut.stack.stack[0][7:0]} top.main.uut.stack.stack[0][7] top.main.uut.stack.stack[0][6] top.main.uut.stack.stack[0][5] top.main.uut.stack.stack[0][4] top.main.uut.stack.stack[0][3] top.main.uut.stack.stack[0][2] top.main.uut.stack.stack[0][1] top.main.uut.stack.stack[0][0]
 @28
 #{top.main.uut.stack.pointer[2:0]} top.main.uut.stack.pointer[2] top.main.uut.stack.pointer[1] top.main.uut.stack.pointer[0]
@@ -109,5 +159,11 @@ top.main.uut.cu2mux_alu_sel
 #{top.main.uut.ram.ram[1][7:0]} top.main.uut.ram.ram[1][7] top.main.uut.ram.ram[1][6] top.main.uut.ram.ram[1][5] top.main.uut.ram.ram[1][4] top.main.uut.ram.ram[1][3] top.main.uut.ram.ram[1][2] top.main.uut.ram.ram[1][1] top.main.uut.ram.ram[1][0]
 #{top.main.uut.ram.ram[2][7:0]} top.main.uut.ram.ram[2][7] top.main.uut.ram.ram[2][6] top.main.uut.ram.ram[2][5] top.main.uut.ram.ram[2][4] top.main.uut.ram.ram[2][3] top.main.uut.ram.ram[2][2] top.main.uut.ram.ram[2][1] top.main.uut.ram.ram[2][0]
 #{top.main.uut.ram.ram[3][7:0]} top.main.uut.ram.ram[3][7] top.main.uut.ram.ram[3][6] top.main.uut.ram.ram[3][5] top.main.uut.ram.ram[3][4] top.main.uut.ram.ram[3][3] top.main.uut.ram.ram[3][2] top.main.uut.ram.ram[3][1] top.main.uut.ram.ram[3][0]
+#{top.main.uut.ram.ram[4][7:0]} top.main.uut.ram.ram[4][7] top.main.uut.ram.ram[4][6] top.main.uut.ram.ram[4][5] top.main.uut.ram.ram[4][4] top.main.uut.ram.ram[4][3] top.main.uut.ram.ram[4][2] top.main.uut.ram.ram[4][1] top.main.uut.ram.ram[4][0]
+#{top.main.uut.ram.ram[5][7:0]} top.main.uut.ram.ram[5][7] top.main.uut.ram.ram[5][6] top.main.uut.ram.ram[5][5] top.main.uut.ram.ram[5][4] top.main.uut.ram.ram[5][3] top.main.uut.ram.ram[5][2] top.main.uut.ram.ram[5][1] top.main.uut.ram.ram[5][0]
+#{top.main.uut.ram.ram[11][7:0]} top.main.uut.ram.ram[11][7] top.main.uut.ram.ram[11][6] top.main.uut.ram.ram[11][5] top.main.uut.ram.ram[11][4] top.main.uut.ram.ram[11][3] top.main.uut.ram.ram[11][2] top.main.uut.ram.ram[11][1] top.main.uut.ram.ram[11][0]
+#{top.main.uut.ram.ram[12][7:0]} top.main.uut.ram.ram[12][7] top.main.uut.ram.ram[12][6] top.main.uut.ram.ram[12][5] top.main.uut.ram.ram[12][4] top.main.uut.ram.ram[12][3] top.main.uut.ram.ram[12][2] top.main.uut.ram.ram[12][1] top.main.uut.ram.ram[12][0]
+#{top.main.uut.ram.ram[13][7:0]} top.main.uut.ram.ram[13][7] top.main.uut.ram.ram[13][6] top.main.uut.ram.ram[13][5] top.main.uut.ram.ram[13][4] top.main.uut.ram.ram[13][3] top.main.uut.ram.ram[13][2] top.main.uut.ram.ram[13][1] top.main.uut.ram.ram[13][0]
+#{top.main.uut.ram.ram[14][7:0]} top.main.uut.ram.ram[14][7] top.main.uut.ram.ram[14][6] top.main.uut.ram.ram[14][5] top.main.uut.ram.ram[14][4] top.main.uut.ram.ram[14][3] top.main.uut.ram.ram[14][2] top.main.uut.ram.ram[14][1] top.main.uut.ram.ram[14][0]
 [pattern_trace] 1
 [pattern_trace] 0

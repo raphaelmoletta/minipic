@@ -39,7 +39,7 @@ architecture a_main of main is
 
   process
   begin
-    wait for 500 ns;
+    wait for 19950 ns;
     reset <= '1';
     wait for 2 ns;
     reset <= '0';

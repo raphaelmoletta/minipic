@@ -52,6 +52,7 @@ architecture a_cpu of cpu is
       reset             : in    std_logic              := '0';
       write_enable      : in    std_logic              := '0';
       read_enable       : in    std_logic              := '0';
+      status_in         : in    address                := (others => '0');
       position          : in    addressP1              := (others => '0');
       data              : inout address                := (others => '0')
       );
@@ -132,7 +133,7 @@ architecture a_cpu of cpu is
 
   --bus signals
   signal bus_aluA       : address                      := (others => '0');
-  signal clock          : std_logic                    := '0';
+  signal clock          : std_logic                    := '1';
 
   --cu signals
   signal cu2rom_wr      : std_logic                    := '0';
@@ -204,7 +205,7 @@ begin
 --Instruction Register
   ir      :  regW          port map (clock, reset, cu2ir_wr, rom2irW, ir2outW);
 --Random Access Memory
-  ram     :  ramPxSxA      port map (clock, reset, cu2ram_wr, cu2ram_re, mux_ram2ramAP, bus_aluA);
+  ram     :  ramPxSxA      port map (clock, reset, cu2ram_wr, cu2ram_re, status2outA, mux_ram2ramAP, bus_aluA);
 --File Select Register
   fsr     :  regA          port map (clock, reset, cu2fsr_wr, bus_aluA, fsr2mux_ramA);
 --Accumulator register
