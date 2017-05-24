@@ -26,7 +26,7 @@ use ieee.numeric_std.all;
 package minipic is 
   --------------------- TYPE BLOCK --------------------
   --Codes to correct ALU's operations
-  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero, op_movw,
+  type alu_opcode is (op_inc, op_add, op_dec, op_sub, op_and, op_or, op_xor, op_com, op_swap, op_rl, op_rr,  op_nop, op_zero, op_nopw,
                       op_bc, op_bs, op_btc, op_bts);
   type instructions is (addwf, andwf, clrf, clrw, comf, decf, decfsz, incf, incfsz, iorwf, movf, movwf, nop, rlf, rrf, subwf, swapf,
                         xorwf, bcf, bsf, btfsc, btfss, addlw, andlw, i_call, clrwdt, i_goto, iorlw, movlw, retfie, retlw, i_return, i_sleep,
@@ -97,7 +97,7 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
     iorlw       => op_or,
     sublw       => op_sub,
     xorlw       => op_xor,
-    movwf       => op_movw,
+    movwf       => op_nopw,
     others      => op_nop
     );
   
@@ -106,23 +106,32 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
   type rom_memory is array (0 to 256) of word;
   --Contains the program instructions
   constant memory_data : rom_memory := (
-    1   => B"11000000001011",           --movlw 0b
-    2   => B"00000010000100",           --movwf fsr
-    3   => B"11000000001000",           --movlw 8
-    4   => B"00000010001010",           --movwf 0a
-    5   => B"11000000000001",           --movlw 1
-    6   => B"00000010000000",           --movwf indf
-    7   => B"00000010000101",           --movwf porta
-    8   => B"00101010000100",           --inc fsr
-    9   => B"11111000000001",           --addlw 1
-    10  => B"00101110001010",           --decfsz 0A
-    11  => B"10100000000110",           --goto 6
-    12  => B"11000000111111",           --movlw 127
-    13  => B"00000010001010",           --movwf 0a
-    14  => B"11000000001011",           --movlw 0B
-    15  => B"00000010000100",           --movwf fsr
-    16  => B"00000010000011",           --
-    
+    0   => B"11_0000_0000_1011",        --movlw 0b
+    1   => B"00_0000_1000_0100",        --movwf fsr
+    2   => B"11_0000_0010_0000",        --movlw 32
+    3   => B"00_0000_1000_1010",        --movwf 0a
+    4   => B"11_0000_0000_0001",        --movlw 1
+    5   => B"00_0000_1000_0000",        --movwf indf
+    6   => B"00_1010_1000_0100",        --inc fsr
+    7   => B"11_1110_0000_0001",        --addlw 1
+    8   => B"00_1011_1000_1010",        --decfsz 0A
+    9   => B"10_1000_0000_0101",        --goto 5
+    10  => B"00_0001_1001_0000",--clrf 16,        --                   TODO CALL EC
+    11  => B"11_0000_0010_0000",        --movlw 32
+    12  => B"00_0000_1000_1010",        --movwf 0a
+    13  => B"11_0000_0000_1011",        --movlw 0B
+    14  => B"00_0000_1000_0100",        --movwf fsr
+    15  => B"00_1000_0000_0000",        --movf INDF, W
+    16  => B"01_1101_0000_0011",        --btfss status, zero
+    17  => B"10_0000_0001_0110",        --call PRINT / line 22
+    18  => B"00_1010_1000_0100",        --inc fsr, f
+    19  => B"00_1011_1000_1010",        --decfsz 0a, f
+    20  => B"10_1000_0000_1111",        --goto 16
+    21  => B"10_1001_1111_1111",        --goto END
+    22  => B"00_1000_0000_0000",        --movf INDF, W
+    23  => B"00_0000_1000_0101",        --movwf porta
+    24  => B"00_0000_0000_1000",        --return
+    25  => B""
     others => (others => '0')
     );
 end package;
@@ -176,8 +185,8 @@ package body minipic is
     elsif inst = i_return then return (
       0 => B"1000_0000_0000_0_00_00",
       1 => B"0100_0000_0000_0_00_00",
-      2 => B"0000_0000_0010_0_00_00",
-      3 => B"0001_0000_0000_0_00_11",
+      2 => B"0010_0000_0010_0_00_00",
+      3 => B"0011_0000_0000_0_00_11",
       4 => B"0000_0000_0000_0_00_00");
     elsif inst = addwf or inst = andwf or inst = comf or inst = decf or inst = incf or inst = iorwf or
       inst = movf  or inst = rlf  or inst = rrf  or inst = subwf  or inst = swapf  or inst = xorwf then return (
@@ -236,7 +245,7 @@ package body minipic is
     else
       ucode := microcode;
     end if;
-    if word_in(7 downto 0) = B"10000000" and (ucode(4) = '1' or ucode(9) = '1') then
+    if word_in(6 downto 0) = B"0000000" and (ucode(4) = '1' or ucode(9) = '1') then
       return (ucode or B"0000_0000_0000_0_10_00");
     else
       return ucode;
@@ -280,18 +289,18 @@ package body minipic is
       when op_btc    => if input(to_integer(bit_sel)) = '0' then
                           output := B"000000000";
                         else
-                          output := input;
+                          output := B"000000001";
                         end if;
       --Test if bit is set on bit_sel's positon, return 0 if true
       when op_bts    => if input(to_integer(bit_sel)) = '1' then
                           output := B"000000000";
                         else
-                          output := input;
+                          output := B"000000001";
                         end if;
       --No operation is executate
       when op_nop    => output := input;
       --Move w's content to bus
-      when op_movw   => output := w_in;
+      when op_nopw   => output := w_in;
       --Set zero
       when op_zero   => output := (others => '0');
     end case;

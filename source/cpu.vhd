@@ -101,6 +101,7 @@ architecture a_cpu of cpu is
       clock             : in    std_logic              := '0';
       reset             : in    std_logic              := '0';
       write_enable      : in    std_logic              := '0';
+      alu_write_enable  : in    std_logic              := '0';
       data_in           : in    address                := (others => '0');
       data_out          : out   address                := (others => '0')
       );
@@ -220,7 +221,7 @@ begin
   alu     :  aluA          port map (clock, cu2alu_wr, alu2status3, cu2alu_bit_sel3, cu2alu_selAL,
                                      mux_alu2aluAP(memory_size - 1 downto 0), w2aluA, bus_aluA);
 --Status register
-  status  :  statusS       port map (clock, reset, cu2status_wr, mix2statusA, status2outA);
+  status  :  statusS       port map (clock, reset, cu2status_wr, cu2alu_wr, mix2statusA, status2outA);
 --Accumulator register
   portA   :  regA          port map (clock, reset, cu2portA_wr, bus_aluA, portA_out);
 --Accumulator register

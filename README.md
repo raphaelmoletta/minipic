@@ -1,1 +1,0 @@
-# minipic

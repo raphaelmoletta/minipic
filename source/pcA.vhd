@@ -42,7 +42,8 @@ begin
     elsif write_enable = '1' then
       if rising_edge(clock) then
         if selection = B"00" then registry <= registry + 1;
-        elsif selection = B"01" and data_in = B"00000000" then registry <= registry + 2;
+        elsif selection = B"01" and data_in = B"0000_0000" then
+          registry <= registry + 2;
         elsif selection = B"10" then registry <= data_in;
         elsif selection = B"11" then registry <= stack_in;
         else  registry <= registry + 1;
@@ -51,5 +52,5 @@ begin
     end if;
   end process;
   data_out  <= registry;
-  stack_out <= data_in;
+  stack_out <= registry;
 end architecture;

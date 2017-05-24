@@ -42,13 +42,12 @@ begin
         input1 := '0' & input;
         out0 := alu_function(input0, input1, selection, bit_sel);
         status(0) <= out0(memory_size);
-        status(1) <= out0(memory_size / 2 +1);
+        status(1) <= out0(memory_size / 2 + 1);
         if out0 = zero then
           status(2) <= '1';
         else
           status(2) <= '0';
         end if;
-        
         output <= out0(memory_size - 1 downto 0);
       else
         output <= (others => 'Z');

@@ -49,7 +49,7 @@ begin
         registry <= stack(to_integer(pointer - 1));
         pointer  <= pointer - 1;
       elsif push = '1' then
-        stack(to_integer(pointer)) <= data_in + 1;
+        stack(to_integer(pointer)) <= (data_in + 1);
         pointer  <= pointer + 1;
       end if;
     end if;
