@@ -1,40 +1,40 @@
 v 4
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "statusS.vhd" "f8e0dfd7327faa1d6f318a0e348e93964f7986b8" "20170524004013.053":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "statusS.vhd" "f8e0dfd7327faa1d6f318a0e348e93964f7986b8" "20170525165704.021":
   entity statuss at 3( 22) + 0 on 35;
   architecture a_statuss of statuss at 19( 550) + 0 on 36;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "romW.vhd" "6dd74f8083fa4c5c46cb4e88d5eb1e1fdfc2b804" "20170524004012.916":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "romW.vhd" "6dd74f8083fa4c5c46cb4e88d5eb1e1fdfc2b804" "20170525165703.873":
   entity romw at 16( 799) + 0 on 31;
   architecture a_romw of romw at 31( 1237) + 0 on 32;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "regA.vhd" "59fd81bb0d1387a6d413a774439947304aa79408" "20170524004012.798":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "regA.vhd" "59fd81bb0d1387a6d413a774439947304aa79408" "20170525165703.737":
   entity rega at 15( 742) + 0 on 27;
   architecture a_rega of rega at 30( 1196) + 0 on 28;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "pcA.vhd" "9ff11b298d1cb6de68d6ebbd2d4ca4ba88483a30" "20170524004012.641":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "pcA.vhd" "9ff11b298d1cb6de68d6ebbd2d4ca4ba88483a30" "20170525165703.574":
   entity pca at 15( 742) + 0 on 23;
   architecture a_pca of pca at 35( 1536) + 0 on 24;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "main.vhd" "56c5640ab2f6172ae2fd16e88fc451caa97d1402" "20170524004012.534":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "main.vhd" "56c5640ab2f6172ae2fd16e88fc451caa97d1402" "20170525165703.457":
   entity main at 15( 742) + 0 on 19;
   architecture a_main of main at 23( 862) + 0 on 20;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "cpu.vhd" "e8e9889fa1f7439ee7500919edb33a66f0683031" "20170524004012.293":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "cpu.vhd" "e8e9889fa1f7439ee7500919edb33a66f0683031" "20170525165703.201":
   entity cpu at 1( 0) + 0 on 15;
   architecture a_cpu of cpu at 16( 410) + 0 on 16;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "package.vhd" "4996ff454b64887b8d7dd37ce3002aee5fdad885" "20170524004012.061":
-  package minipic at 22( 1143) + 0 on 11 body;
-  package body minipic at 138( 6664) + 0 on 12;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "aluA.vhd" "2652a9ba17569c4a5fd7a51b64e34f6f77e069e6" "20170524004012.224":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "package.vhd" "90ddc196996702ff6d897eab4d250ef73b5f5e1a" "20170525165702.786":
+  package minipic at 22( 1141) + 0 on 11 body;
+  package body minipic at 162( 9146) + 0 on 12;
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "aluA.vhd" "2652a9ba17569c4a5fd7a51b64e34f6f77e069e6" "20170525165703.129":
   entity alua at 15( 742) + 0 on 13;
   architecture a_alua of alua at 33( 1425) + 0 on 14;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "cuW.vhd" "742a1520f7c9a684a057d0f91736457de2bf176e" "20170524004012.444":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "cuW.vhd" "742a1520f7c9a684a057d0f91736457de2bf176e" "20170525165703.363":
   entity cuw at 15( 742) + 0 on 17;
   architecture a_cuw of cuw at 46( 2196) + 0 on 18;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "muxAPx1bit.vhd" "0a76d0a2456c2854fd2cbe6430b782e181b29735" "20170524004012.585":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "muxAPx1bit.vhd" "0a76d0a2456c2854fd2cbe6430b782e181b29735" "20170525165703.518":
   entity muxapx1bit at 15( 742) + 0 on 21;
   architecture a_muxapx1bit of muxapx1bit at 29( 1154) + 0 on 22;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "ramPxSxA.vhd" "6c96c4252d22d64ec347a6d3c07b7aef8d421931" "20170524004012.723":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "ramPxSxA.vhd" "6c96c4252d22d64ec347a6d3c07b7aef8d421931" "20170525165703.667":
   entity rampxsxa at 15( 742) + 0 on 25;
   architecture a_rampxsxa of rampxsxa at 32( 1343) + 0 on 26;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "regW.vhd" "0bc60fc1dd64bb16d2f666b98b1dcd26a59d4948" "20170524004012.858":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "regW.vhd" "0bc60fc1dd64bb16d2f666b98b1dcd26a59d4948" "20170525165703.799":
   entity regw at 15( 742) + 0 on 29;
   architecture a_regw of regw at 30( 1206) + 0 on 30;
-file "/home/rapha/Documents/ec/CSW30/minipic/source/" "stackDxA.vhd" "18f35e5ca836b62919c4daa132e868c2938af8e2" "20170524004012.968":
+file "/home/rapha/Documents/ec/CSW30/minipic/source/" "stackDxA.vhd" "18f35e5ca836b62919c4daa132e868c2938af8e2" "20170525165703.924":
   entity stackdxa at 18( 856) + 0 on 33;
   architecture a_stackdxa of stackdxa at 34( 1385) + 0 on 34;

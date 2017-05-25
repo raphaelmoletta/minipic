@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Wed May 24 00:40:02 2017
+[*] Thu May 25 14:52:10 2017
 [*]
 [dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
-[dumpfile_mtime] "Wed May 24 00:36:37 2017"
-[dumpfile_size] 625652
+[dumpfile_mtime] "Thu May 25 14:46:21 2017"
+[dumpfile_size] 644687
 [savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
-[timestart] 2094540000
+[timestart] 1828760000
 [size] 1301 744
 [pos] -1 -1
-*-23.255806 2104000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-23.255806 1857900000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.main.
 [treeopen] top.main.uut.
@@ -109,6 +109,9 @@ top.main.uut.cu.cu2stack_push
 top.main.uut.cu.cu2ram_re
 top.main.uut.cu.cu2mux_ram_sel
 top.main.uut.cu.cu2mux_alu_sel
+@24
+#{top.main.uut.fsr2mux_rama[7:0]} top.main.uut.fsr2mux_rama[7] top.main.uut.fsr2mux_rama[6] top.main.uut.fsr2mux_rama[5] top.main.uut.fsr2mux_rama[4] top.main.uut.fsr2mux_rama[3] top.main.uut.fsr2mux_rama[2] top.main.uut.fsr2mux_rama[1] top.main.uut.fsr2mux_rama[0]
+@28
 #{top.main.uut.pc.selection[1:0]} top.main.uut.pc.selection[1] top.main.uut.pc.selection[0]
 @c00022
 #{top.main.uut.bus_alua[7:0]} top.main.uut.bus_alua[7] top.main.uut.bus_alua[6] top.main.uut.bus_alua[5] top.main.uut.bus_alua[4] top.main.uut.bus_alua[3] top.main.uut.bus_alua[2] top.main.uut.bus_alua[1] top.main.uut.bus_alua[0]
@@ -125,7 +128,7 @@ top.main.uut.bus_alua[0]
 -group_end
 @24
 #{top.main.uut.alu.input[7:0]} top.main.uut.alu.input[7] top.main.uut.alu.input[6] top.main.uut.alu.input[5] top.main.uut.alu.input[4] top.main.uut.alu.input[3] top.main.uut.alu.input[2] top.main.uut.alu.input[1] top.main.uut.alu.input[0]
-@22
+@25
 #{top.main.uut.w2alua[7:0]} top.main.uut.w2alua[7] top.main.uut.w2alua[6] top.main.uut.w2alua[5] top.main.uut.w2alua[4] top.main.uut.w2alua[3] top.main.uut.w2alua[2] top.main.uut.w2alua[1] top.main.uut.w2alua[0]
 @28
 #{top.main.uut.status.status_reg[7:0]} top.main.uut.status.status_reg[7] top.main.uut.status.status_reg[6] top.main.uut.status.status_reg[5] top.main.uut.status.status_reg[4] top.main.uut.status.status_reg[3] top.main.uut.status.status_reg[2] top.main.uut.status.status_reg[1] top.main.uut.status.status_reg[0]
@@ -139,19 +142,49 @@ top.main.uut.bus_alua[0]
 #{top.main.uut.stack.data_in[7:0]} top.main.uut.stack.data_in[7] top.main.uut.stack.data_in[6] top.main.uut.stack.data_in[5] top.main.uut.stack.data_in[4] top.main.uut.stack.data_in[3] top.main.uut.stack.data_in[2] top.main.uut.stack.data_in[1] top.main.uut.stack.data_in[0]
 @28
 #{top.main.uut.stack.pointer[2:0]} top.main.uut.stack.pointer[2] top.main.uut.stack.pointer[1] top.main.uut.stack.pointer[0]
-@22
-#{top.main.uut.fsr2mux_rama[7:0]} top.main.uut.fsr2mux_rama[7] top.main.uut.fsr2mux_rama[6] top.main.uut.fsr2mux_rama[5] top.main.uut.fsr2mux_rama[4] top.main.uut.fsr2mux_rama[3] top.main.uut.fsr2mux_rama[2] top.main.uut.fsr2mux_rama[1] top.main.uut.fsr2mux_rama[0]
+@24
 #{top.main.uut.ram.ram[2][7:0]} top.main.uut.ram.ram[2][7] top.main.uut.ram.ram[2][6] top.main.uut.ram.ram[2][5] top.main.uut.ram.ram[2][4] top.main.uut.ram.ram[2][3] top.main.uut.ram.ram[2][2] top.main.uut.ram.ram[2][1] top.main.uut.ram.ram[2][0]
 #{top.main.uut.ram.ram[3][7:0]} top.main.uut.ram.ram[3][7] top.main.uut.ram.ram[3][6] top.main.uut.ram.ram[3][5] top.main.uut.ram.ram[3][4] top.main.uut.ram.ram[3][3] top.main.uut.ram.ram[3][2] top.main.uut.ram.ram[3][1] top.main.uut.ram.ram[3][0]
 #{top.main.uut.ram.ram[4][7:0]} top.main.uut.ram.ram[4][7] top.main.uut.ram.ram[4][6] top.main.uut.ram.ram[4][5] top.main.uut.ram.ram[4][4] top.main.uut.ram.ram[4][3] top.main.uut.ram.ram[4][2] top.main.uut.ram.ram[4][1] top.main.uut.ram.ram[4][0]
 #{top.main.uut.ram.ram[5][7:0]} top.main.uut.ram.ram[5][7] top.main.uut.ram.ram[5][6] top.main.uut.ram.ram[5][5] top.main.uut.ram.ram[5][4] top.main.uut.ram.ram[5][3] top.main.uut.ram.ram[5][2] top.main.uut.ram.ram[5][1] top.main.uut.ram.ram[5][0]
+#{top.main.uut.ram.ram[6][7:0]} top.main.uut.ram.ram[6][7] top.main.uut.ram.ram[6][6] top.main.uut.ram.ram[6][5] top.main.uut.ram.ram[6][4] top.main.uut.ram.ram[6][3] top.main.uut.ram.ram[6][2] top.main.uut.ram.ram[6][1] top.main.uut.ram.ram[6][0]
+#{top.main.uut.ram.ram[7][7:0]} top.main.uut.ram.ram[7][7] top.main.uut.ram.ram[7][6] top.main.uut.ram.ram[7][5] top.main.uut.ram.ram[7][4] top.main.uut.ram.ram[7][3] top.main.uut.ram.ram[7][2] top.main.uut.ram.ram[7][1] top.main.uut.ram.ram[7][0]
+#{top.main.uut.ram.ram[8][7:0]} top.main.uut.ram.ram[8][7] top.main.uut.ram.ram[8][6] top.main.uut.ram.ram[8][5] top.main.uut.ram.ram[8][4] top.main.uut.ram.ram[8][3] top.main.uut.ram.ram[8][2] top.main.uut.ram.ram[8][1] top.main.uut.ram.ram[8][0]
+#{top.main.uut.ram.ram[9][7:0]} top.main.uut.ram.ram[9][7] top.main.uut.ram.ram[9][6] top.main.uut.ram.ram[9][5] top.main.uut.ram.ram[9][4] top.main.uut.ram.ram[9][3] top.main.uut.ram.ram[9][2] top.main.uut.ram.ram[9][1] top.main.uut.ram.ram[9][0]
 #{top.main.uut.ram.ram[10][7:0]} top.main.uut.ram.ram[10][7] top.main.uut.ram.ram[10][6] top.main.uut.ram.ram[10][5] top.main.uut.ram.ram[10][4] top.main.uut.ram.ram[10][3] top.main.uut.ram.ram[10][2] top.main.uut.ram.ram[10][1] top.main.uut.ram.ram[10][0]
 #{top.main.uut.ram.ram[11][7:0]} top.main.uut.ram.ram[11][7] top.main.uut.ram.ram[11][6] top.main.uut.ram.ram[11][5] top.main.uut.ram.ram[11][4] top.main.uut.ram.ram[11][3] top.main.uut.ram.ram[11][2] top.main.uut.ram.ram[11][1] top.main.uut.ram.ram[11][0]
 #{top.main.uut.ram.ram[12][7:0]} top.main.uut.ram.ram[12][7] top.main.uut.ram.ram[12][6] top.main.uut.ram.ram[12][5] top.main.uut.ram.ram[12][4] top.main.uut.ram.ram[12][3] top.main.uut.ram.ram[12][2] top.main.uut.ram.ram[12][1] top.main.uut.ram.ram[12][0]
 #{top.main.uut.ram.ram[13][7:0]} top.main.uut.ram.ram[13][7] top.main.uut.ram.ram[13][6] top.main.uut.ram.ram[13][5] top.main.uut.ram.ram[13][4] top.main.uut.ram.ram[13][3] top.main.uut.ram.ram[13][2] top.main.uut.ram.ram[13][1] top.main.uut.ram.ram[13][0]
 #{top.main.uut.ram.ram[14][7:0]} top.main.uut.ram.ram[14][7] top.main.uut.ram.ram[14][6] top.main.uut.ram.ram[14][5] top.main.uut.ram.ram[14][4] top.main.uut.ram.ram[14][3] top.main.uut.ram.ram[14][2] top.main.uut.ram.ram[14][1] top.main.uut.ram.ram[14][0]
 #{top.main.uut.ram.ram[15][7:0]} top.main.uut.ram.ram[15][7] top.main.uut.ram.ram[15][6] top.main.uut.ram.ram[15][5] top.main.uut.ram.ram[15][4] top.main.uut.ram.ram[15][3] top.main.uut.ram.ram[15][2] top.main.uut.ram.ram[15][1] top.main.uut.ram.ram[15][0]
-@23
 #{top.main.uut.ram.ram[16][7:0]} top.main.uut.ram.ram[16][7] top.main.uut.ram.ram[16][6] top.main.uut.ram.ram[16][5] top.main.uut.ram.ram[16][4] top.main.uut.ram.ram[16][3] top.main.uut.ram.ram[16][2] top.main.uut.ram.ram[16][1] top.main.uut.ram.ram[16][0]
+#{top.main.uut.ram.ram[17][7:0]} top.main.uut.ram.ram[17][7] top.main.uut.ram.ram[17][6] top.main.uut.ram.ram[17][5] top.main.uut.ram.ram[17][4] top.main.uut.ram.ram[17][3] top.main.uut.ram.ram[17][2] top.main.uut.ram.ram[17][1] top.main.uut.ram.ram[17][0]
+#{top.main.uut.ram.ram[18][7:0]} top.main.uut.ram.ram[18][7] top.main.uut.ram.ram[18][6] top.main.uut.ram.ram[18][5] top.main.uut.ram.ram[18][4] top.main.uut.ram.ram[18][3] top.main.uut.ram.ram[18][2] top.main.uut.ram.ram[18][1] top.main.uut.ram.ram[18][0]
+#{top.main.uut.ram.ram[19][7:0]} top.main.uut.ram.ram[19][7] top.main.uut.ram.ram[19][6] top.main.uut.ram.ram[19][5] top.main.uut.ram.ram[19][4] top.main.uut.ram.ram[19][3] top.main.uut.ram.ram[19][2] top.main.uut.ram.ram[19][1] top.main.uut.ram.ram[19][0]
+#{top.main.uut.ram.ram[20][7:0]} top.main.uut.ram.ram[20][7] top.main.uut.ram.ram[20][6] top.main.uut.ram.ram[20][5] top.main.uut.ram.ram[20][4] top.main.uut.ram.ram[20][3] top.main.uut.ram.ram[20][2] top.main.uut.ram.ram[20][1] top.main.uut.ram.ram[20][0]
+#{top.main.uut.ram.ram[21][7:0]} top.main.uut.ram.ram[21][7] top.main.uut.ram.ram[21][6] top.main.uut.ram.ram[21][5] top.main.uut.ram.ram[21][4] top.main.uut.ram.ram[21][3] top.main.uut.ram.ram[21][2] top.main.uut.ram.ram[21][1] top.main.uut.ram.ram[21][0]
+#{top.main.uut.ram.ram[22][7:0]} top.main.uut.ram.ram[22][7] top.main.uut.ram.ram[22][6] top.main.uut.ram.ram[22][5] top.main.uut.ram.ram[22][4] top.main.uut.ram.ram[22][3] top.main.uut.ram.ram[22][2] top.main.uut.ram.ram[22][1] top.main.uut.ram.ram[22][0]
+#{top.main.uut.ram.ram[23][7:0]} top.main.uut.ram.ram[23][7] top.main.uut.ram.ram[23][6] top.main.uut.ram.ram[23][5] top.main.uut.ram.ram[23][4] top.main.uut.ram.ram[23][3] top.main.uut.ram.ram[23][2] top.main.uut.ram.ram[23][1] top.main.uut.ram.ram[23][0]
+#{top.main.uut.ram.ram[24][7:0]} top.main.uut.ram.ram[24][7] top.main.uut.ram.ram[24][6] top.main.uut.ram.ram[24][5] top.main.uut.ram.ram[24][4] top.main.uut.ram.ram[24][3] top.main.uut.ram.ram[24][2] top.main.uut.ram.ram[24][1] top.main.uut.ram.ram[24][0]
+#{top.main.uut.ram.ram[25][7:0]} top.main.uut.ram.ram[25][7] top.main.uut.ram.ram[25][6] top.main.uut.ram.ram[25][5] top.main.uut.ram.ram[25][4] top.main.uut.ram.ram[25][3] top.main.uut.ram.ram[25][2] top.main.uut.ram.ram[25][1] top.main.uut.ram.ram[25][0]
+#{top.main.uut.ram.ram[26][7:0]} top.main.uut.ram.ram[26][7] top.main.uut.ram.ram[26][6] top.main.uut.ram.ram[26][5] top.main.uut.ram.ram[26][4] top.main.uut.ram.ram[26][3] top.main.uut.ram.ram[26][2] top.main.uut.ram.ram[26][1] top.main.uut.ram.ram[26][0]
+#{top.main.uut.ram.ram[27][7:0]} top.main.uut.ram.ram[27][7] top.main.uut.ram.ram[27][6] top.main.uut.ram.ram[27][5] top.main.uut.ram.ram[27][4] top.main.uut.ram.ram[27][3] top.main.uut.ram.ram[27][2] top.main.uut.ram.ram[27][1] top.main.uut.ram.ram[27][0]
+#{top.main.uut.ram.ram[28][7:0]} top.main.uut.ram.ram[28][7] top.main.uut.ram.ram[28][6] top.main.uut.ram.ram[28][5] top.main.uut.ram.ram[28][4] top.main.uut.ram.ram[28][3] top.main.uut.ram.ram[28][2] top.main.uut.ram.ram[28][1] top.main.uut.ram.ram[28][0]
+#{top.main.uut.ram.ram[29][7:0]} top.main.uut.ram.ram[29][7] top.main.uut.ram.ram[29][6] top.main.uut.ram.ram[29][5] top.main.uut.ram.ram[29][4] top.main.uut.ram.ram[29][3] top.main.uut.ram.ram[29][2] top.main.uut.ram.ram[29][1] top.main.uut.ram.ram[29][0]
+#{top.main.uut.ram.ram[30][7:0]} top.main.uut.ram.ram[30][7] top.main.uut.ram.ram[30][6] top.main.uut.ram.ram[30][5] top.main.uut.ram.ram[30][4] top.main.uut.ram.ram[30][3] top.main.uut.ram.ram[30][2] top.main.uut.ram.ram[30][1] top.main.uut.ram.ram[30][0]
+#{top.main.uut.ram.ram[31][7:0]} top.main.uut.ram.ram[31][7] top.main.uut.ram.ram[31][6] top.main.uut.ram.ram[31][5] top.main.uut.ram.ram[31][4] top.main.uut.ram.ram[31][3] top.main.uut.ram.ram[31][2] top.main.uut.ram.ram[31][1] top.main.uut.ram.ram[31][0]
+#{top.main.uut.ram.ram[32][7:0]} top.main.uut.ram.ram[32][7] top.main.uut.ram.ram[32][6] top.main.uut.ram.ram[32][5] top.main.uut.ram.ram[32][4] top.main.uut.ram.ram[32][3] top.main.uut.ram.ram[32][2] top.main.uut.ram.ram[32][1] top.main.uut.ram.ram[32][0]
+#{top.main.uut.ram.ram[33][7:0]} top.main.uut.ram.ram[33][7] top.main.uut.ram.ram[33][6] top.main.uut.ram.ram[33][5] top.main.uut.ram.ram[33][4] top.main.uut.ram.ram[33][3] top.main.uut.ram.ram[33][2] top.main.uut.ram.ram[33][1] top.main.uut.ram.ram[33][0]
+#{top.main.uut.ram.ram[34][7:0]} top.main.uut.ram.ram[34][7] top.main.uut.ram.ram[34][6] top.main.uut.ram.ram[34][5] top.main.uut.ram.ram[34][4] top.main.uut.ram.ram[34][3] top.main.uut.ram.ram[34][2] top.main.uut.ram.ram[34][1] top.main.uut.ram.ram[34][0]
+#{top.main.uut.ram.ram[35][7:0]} top.main.uut.ram.ram[35][7] top.main.uut.ram.ram[35][6] top.main.uut.ram.ram[35][5] top.main.uut.ram.ram[35][4] top.main.uut.ram.ram[35][3] top.main.uut.ram.ram[35][2] top.main.uut.ram.ram[35][1] top.main.uut.ram.ram[35][0]
+#{top.main.uut.ram.ram[36][7:0]} top.main.uut.ram.ram[36][7] top.main.uut.ram.ram[36][6] top.main.uut.ram.ram[36][5] top.main.uut.ram.ram[36][4] top.main.uut.ram.ram[36][3] top.main.uut.ram.ram[36][2] top.main.uut.ram.ram[36][1] top.main.uut.ram.ram[36][0]
+#{top.main.uut.ram.ram[37][7:0]} top.main.uut.ram.ram[37][7] top.main.uut.ram.ram[37][6] top.main.uut.ram.ram[37][5] top.main.uut.ram.ram[37][4] top.main.uut.ram.ram[37][3] top.main.uut.ram.ram[37][2] top.main.uut.ram.ram[37][1] top.main.uut.ram.ram[37][0]
+#{top.main.uut.ram.ram[38][7:0]} top.main.uut.ram.ram[38][7] top.main.uut.ram.ram[38][6] top.main.uut.ram.ram[38][5] top.main.uut.ram.ram[38][4] top.main.uut.ram.ram[38][3] top.main.uut.ram.ram[38][2] top.main.uut.ram.ram[38][1] top.main.uut.ram.ram[38][0]
+#{top.main.uut.ram.ram[39][7:0]} top.main.uut.ram.ram[39][7] top.main.uut.ram.ram[39][6] top.main.uut.ram.ram[39][5] top.main.uut.ram.ram[39][4] top.main.uut.ram.ram[39][3] top.main.uut.ram.ram[39][2] top.main.uut.ram.ram[39][1] top.main.uut.ram.ram[39][0]
+#{top.main.uut.ram.ram[40][7:0]} top.main.uut.ram.ram[40][7] top.main.uut.ram.ram[40][6] top.main.uut.ram.ram[40][5] top.main.uut.ram.ram[40][4] top.main.uut.ram.ram[40][3] top.main.uut.ram.ram[40][2] top.main.uut.ram.ram[40][1] top.main.uut.ram.ram[40][0]
+#{top.main.uut.ram.ram[41][7:0]} top.main.uut.ram.ram[41][7] top.main.uut.ram.ram[41][6] top.main.uut.ram.ram[41][5] top.main.uut.ram.ram[41][4] top.main.uut.ram.ram[41][3] top.main.uut.ram.ram[41][2] top.main.uut.ram.ram[41][1] top.main.uut.ram.ram[41][0]
+#{top.main.uut.ram.ram[42][7:0]} top.main.uut.ram.ram[42][7] top.main.uut.ram.ram[42][6] top.main.uut.ram.ram[42][5] top.main.uut.ram.ram[42][4] top.main.uut.ram.ram[42][3] top.main.uut.ram.ram[42][2] top.main.uut.ram.ram[42][1] top.main.uut.ram.ram[42][0]
+#{top.main.uut.ram.ram[43][7:0]} top.main.uut.ram.ram[43][7] top.main.uut.ram.ram[43][6] top.main.uut.ram.ram[43][5] top.main.uut.ram.ram[43][4] top.main.uut.ram.ram[43][3] top.main.uut.ram.ram[43][2] top.main.uut.ram.ram[43][1] top.main.uut.ram.ram[43][0]
+#{top.main.uut.ram.ram[44][7:0]} top.main.uut.ram.ram[44][7] top.main.uut.ram.ram[44][6] top.main.uut.ram.ram[44][5] top.main.uut.ram.ram[44][4] top.main.uut.ram.ram[44][3] top.main.uut.ram.ram[44][2] top.main.uut.ram.ram[44][1] top.main.uut.ram.ram[44][0]
 [pattern_trace] 1
 [pattern_trace] 0
