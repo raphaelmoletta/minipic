@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Thu May 25 14:52:10 2017
+[*] Fri May 26 04:12:45 2017
 [*]
 [dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
-[dumpfile_mtime] "Thu May 25 14:46:21 2017"
-[dumpfile_size] 644687
+[dumpfile_mtime] "Fri May 26 04:10:38 2017"
+[dumpfile_size] 612503
 [savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
-[timestart] 1828760000
+[timestart] 3620000000
 [size] 1301 744
 [pos] -1 -1
-*-23.255806 1857900000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-31.255806 5170000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.main.
 [treeopen] top.main.uut.
@@ -109,7 +109,7 @@ top.main.uut.cu.cu2stack_push
 top.main.uut.cu.cu2ram_re
 top.main.uut.cu.cu2mux_ram_sel
 top.main.uut.cu.cu2mux_alu_sel
-@24
+@25
 #{top.main.uut.fsr2mux_rama[7:0]} top.main.uut.fsr2mux_rama[7] top.main.uut.fsr2mux_rama[6] top.main.uut.fsr2mux_rama[5] top.main.uut.fsr2mux_rama[4] top.main.uut.fsr2mux_rama[3] top.main.uut.fsr2mux_rama[2] top.main.uut.fsr2mux_rama[1] top.main.uut.fsr2mux_rama[0]
 @28
 #{top.main.uut.pc.selection[1:0]} top.main.uut.pc.selection[1] top.main.uut.pc.selection[0]
@@ -128,7 +128,6 @@ top.main.uut.bus_alua[0]
 -group_end
 @24
 #{top.main.uut.alu.input[7:0]} top.main.uut.alu.input[7] top.main.uut.alu.input[6] top.main.uut.alu.input[5] top.main.uut.alu.input[4] top.main.uut.alu.input[3] top.main.uut.alu.input[2] top.main.uut.alu.input[1] top.main.uut.alu.input[0]
-@25
 #{top.main.uut.w2alua[7:0]} top.main.uut.w2alua[7] top.main.uut.w2alua[6] top.main.uut.w2alua[5] top.main.uut.w2alua[4] top.main.uut.w2alua[3] top.main.uut.w2alua[2] top.main.uut.w2alua[1] top.main.uut.w2alua[0]
 @28
 #{top.main.uut.status.status_reg[7:0]} top.main.uut.status.status_reg[7] top.main.uut.status.status_reg[6] top.main.uut.status.status_reg[5] top.main.uut.status.status_reg[4] top.main.uut.status.status_reg[3] top.main.uut.status.status_reg[2] top.main.uut.status.status_reg[1] top.main.uut.status.status_reg[0]
