@@ -109,7 +109,7 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
     --START FULFILL TABLE
     0   => B"11_0000_0000_1100",        --movlw 0c                      w = 12
     1   => B"00_0000_1000_0100",        --movwf fsr                     fsr = w
-    2   => B"00_0000_1000_1001",        --movwf 9                       first_position = w
+    2   => B"00_0000_1000_1001",        --movwf 9                       firstPosition = w
     3   => B"11_0000_0010_0000",        --movlw 32                      w = 32
     4   => B"00_0000_1000_1000",        --movwf 8                       size = w
     5   => B"00_0000_1000_1010",        --movwf 0a                      count1 = w
@@ -125,7 +125,7 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
     14  => B"00_0000_1000_1010",        --movwf 0a                      count1 = w
     15  => B"00_1000_0000_1000",        --movf 8, w                     w = size // 32
     16  => B"00_0000_1000_1011",        --movwf 0b                      count2 = w
-    17  => B"00_1000_0000_1001",        --movf 9, w                     w = first_position
+    17  => B"00_1000_0000_1001",        --movf 9, w                     w = firstPosition
     18  => B"00_0000_1000_0100",        --movwf FSR                     fsr = w
     19  => B"00_1000_0000_0111",        --movf 7, w                     w = next
     20  => B"00_0111_1000_0100",        --addwf fsr, f                  fsr += w
@@ -135,10 +135,10 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
     24  => B"10_0000_0001_1100",        --call 28                       call functionEliminate
     25  => B"00_1011_1000_1011",        --decfsz 11, w                  if count1 - 1 = 0 skip
     26  => B"10_1000_0000_1111",        --goto 15                       loop line 15
-    27  => B"10_1000_0010_0110",        --goto 37                       print
+    27  => B"10_1000_0010_1010",        --goto 42                       goto remove zeros
     --END BODY / START FUNCTION ELIMINATE
-    28  => B"00_0000_0000_0000",        --movf 9, w                     w = first_position
-    29  => B"00_0000_0000_0000",        --movwf FSR                     fsr = w
+    28  => B"00_0000_0000_0000",        --movf 9, w                     w = firstPosition
+    29  => B"00_0000_0000_0000",        --movwf fsr                     fsr = w
     30  => B"00_1000_0000_0111",        --movf 7, w                     w = next
     31  => B"00_0111_1000_0100",        --addwf fsr, f                  fsr += w
     32  => B"00_1000_0000_0000",        --movf INDF, W                  w = array[fsr]
@@ -146,14 +146,58 @@ type aluop_microinstructions is array (addwf to xorlw) of alu_opcode;
     34  => B"00_0000_1100_0000",        --movwf tmp                     tmp = w
     35  => B"00_1000_0000_1011",        --movf 11, w                    w = cont2
     36  => B"00_0010_0000_0111",        --subwf 11, w                   cont2 -= w
-    37  => B"01_1000_0000_0011",        --btfsc
-    38  => B"00_0000_0000_1000",        --return
+    37  => B"01_1000_0000_0011",        --btfsc                         if status = zero skip
+    38  => B"00_0000_0000_1000",        --return                        return call
     39  => B"00_0000_1000_1011",        --movwf 11                      cont2 = w
     40  => B"00_1000_0100_0000",        --movf tmp, w                   w = tmp
     41  => B"10_1000_0001_1110",        --goto 30                       loop line 30
+    --END FUNCTION ELIMINATE / START REMOVE ZEROS
+    42  => B"00_1010_1000_1001",        --incf 9                        firstPosition++
+    43  => B"00_1000_0000_1001",        --movf 9, w                     w = firstPosition
+    44  => B"00_0000_1000_0100",        --movwf fsr                     fsr = w
+    45  => B"00_1000_0000_1000",        --movf 8, w                     w = size // 32
+    46  => B"00_0000_1000_1010",        --movwf 0a                      count1 = w
+    47  => B"00_1000_0000_0000",        --movf INDF, W                  w = array[fsr]
+    48  => B"01_1001_0000_0011",        --btfss                         if status != zero skip
+    49  => B"10_0000_0011_0110",        --call 54                       call searchNoZero
+    50  => B"00_1010_1000_0100",        --incf fsr, f                   fsr++
+    51  => B"00_1011_1000_1010",        --decfsz 10, w                  if count1 - 1 = 0 skip
+    52  => B"10_1000_0010_1111",        --goto 47                       loop line 47
+    53  => B"10_1000_0100_1000",        --goto 72                       goto print
+    --END REMOVE ZEROS / START searchNoZero
+    54  => B"00_1000_0000_1010",        --movf 0a, w                    w = count1
+    55  => B"00_0000_1000_1011",        --movwf 0b                      count2 = w
+    56  => B"00_1000_0000_0100",        --movf fsr, w                   w = fsr
+    57  => B"00_0000_1000_0111",        --movwf 7                       next = w
+    58  => B"00_1010_1000_0100",        --incf fsr, f                   fsr++
+    59  => B"00_1011_1000_1011",        --decfsz 11, w                  if count2 - 1 = 0 skip
+    60  => B"10_1000_0011_1110",        --goto 62                       loop line 62
+    61  => B"00_0000_0000_1000",        --return                        return call
+    62  => B"00_1000_0000_0000",        --movf INDF, W                  w = array[fsr]
+    63  => B"01_1001_0000_0011",        --btfsc                         if status = zero skip
+    64  => B"10_1000_0011_1010",        --goto 58                       loop line 58
+    65  => B"00_0000_1111_1111",        --movwf 127                     tmp = w
+    66  => B"00_0001_1000_0000",        --clrf INDF                     array[fsr] = 0
+    67  => B"00_1000_0000_0111",        --movf next, w                  w = next
+    68  => B"00_0000_1000_0100",        --movwf fsr, f                  fsr = w
+    69  => B"00_1000_0111_1111",        --movf tmp, w                   w = tmp
+    70  => B"00_0000_1000_0000",        --movwf INDF, f                 array[fsr] = w
+    71  => B"00_0000_0000_1000",        --return                        return call
+    --END searchNoZero / START print
+    72  => B"00_1000_0000_1001",        --movf 9, w                     w = firstPosition
+    73  => B"00_0000_1000_0100",        --movwf fsr                     fsr = w
+    74  => B"00_1000_0000_1000",        --movf 8, w                     w = size // 32
+    75  => B"00_0000_1000_1010",        --movwf 0a                      count1 = w
+    76  => B"00_0011_1000_1010",        --decf cont1, f                 count1--
+    77  => B"00_1000_0000_0000",        --movf INDF, W                  w = array[fsr]
+    78  => B"00_0000_1000_0101",        --movwf porta, f                porta = w
+    79  => B"00_0000_1000_0110",        --movwf portb, f                portb = w
+    80  => B"00_1010_1000_0100",        --incf fsr, f                   fsr++
+    81  => B"00_1011_1000_1010",        --decfsz count1, f              if count2 - 1 = 0 skip
+    82  => B"10_1000_0100_1101",        --goto 77                       loop line 77
+    83  => B"00_0000_0000_0000",        --nop
+    84  => B"10_1000_0101_0100",        --goto 83                       loop line 83
     
-    --return
-
     others => (others => '0')
     );
 end package;

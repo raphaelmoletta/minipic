@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Fri May 26 04:12:45 2017
+[*] Mon May 29 00:07:10 2017
 [*]
 [dumpfile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.ghw"
-[dumpfile_mtime] "Fri May 26 04:10:38 2017"
-[dumpfile_size] 612503
+[dumpfile_mtime] "Mon May 29 00:03:42 2017"
+[dumpfile_size] 1465700
 [savefile] "/home/rapha/Documents/ec/CSW30/minipic/source/waves/main.gtkw"
-[timestart] 3620000000
+[timestart] 9000000000
 [size] 1301 744
 [pos] -1 -1
-*-31.255806 5170000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-32.255806 20840000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.main.
 [treeopen] top.main.uut.
@@ -88,7 +88,7 @@ top.main.uut.cu.microcode[1]
 top.main.uut.cu.microcode[0]
 @1401200
 -group_end
-@24
+@25
 #{top.main.uut.pc2roma[7:0]} top.main.uut.pc2roma[7] top.main.uut.pc2roma[6] top.main.uut.pc2roma[5] top.main.uut.pc2roma[4] top.main.uut.pc2roma[3] top.main.uut.pc2roma[2] top.main.uut.pc2roma[1] top.main.uut.pc2roma[0]
 @28
 [color] 5
@@ -109,7 +109,7 @@ top.main.uut.cu.cu2stack_push
 top.main.uut.cu.cu2ram_re
 top.main.uut.cu.cu2mux_ram_sel
 top.main.uut.cu.cu2mux_alu_sel
-@25
+@24
 #{top.main.uut.fsr2mux_rama[7:0]} top.main.uut.fsr2mux_rama[7] top.main.uut.fsr2mux_rama[6] top.main.uut.fsr2mux_rama[5] top.main.uut.fsr2mux_rama[4] top.main.uut.fsr2mux_rama[3] top.main.uut.fsr2mux_rama[2] top.main.uut.fsr2mux_rama[1] top.main.uut.fsr2mux_rama[0]
 @28
 #{top.main.uut.pc.selection[1:0]} top.main.uut.pc.selection[1] top.main.uut.pc.selection[0]
